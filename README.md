@@ -10,11 +10,11 @@
 # 使用说明
 快速安装  
 ```
-go install github.com/yamakiller/glacier-toolchain/cmd/toolchain 
+go install github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain 
 ```
 使用指令
 ```
-toolchain -h
+glacier-toolchain -h
 
 Usage:
     toolchain [flags]
@@ -29,7 +29,7 @@ Flags:
 -h, --help      显示工具帮助信息
 -v, --version   显示工具版本信息
 
-Use "toolchain [command] --help" 显示更多关于命令的帮助信息.
+Use "glacier-toolchain [command] --help" 显示更多关于命令的帮助信息.
 ```
 - 枚举生成器（如下测试用例）
 ```

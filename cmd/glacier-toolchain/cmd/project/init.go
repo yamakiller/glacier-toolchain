@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/spf13/cobra"
-	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/project"
+	"github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain/project"
 )
 
-// addCmd 初始化系统
-var addCmd = &cobra.Command{
-	Use:   "add",
+// InitCmd 初始化系统
+var initCmd = &cobra.Command{
+	Use:   "init",
 	Short: "初始化",
 	Long:  `初始化一个toolchain项目`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -31,5 +31,5 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.AddCommand(addCmd)
+	Cmd.AddCommand(initCmd)
 }

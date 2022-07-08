@@ -1,5 +1,5 @@
 ECHO OFF
-SET TOOLCHAIN_MAIN=cmd/toolchain/main.go
+SET TOOLCHAIN_MAIN=cmd/glacier-toolchain/main.go
 SET PROTOC_GEN_GO_HTTP_MAIN=cmd/protoc-gen-go-http/main.go
 
 SET PROJECT_NAME=glacier-toolchain
@@ -13,7 +13,7 @@ IF %1==clean GOTO CLEAN
 IF %1==gen GOTO GEN
 
 :INSTALL
-    go install %PKG%/cmd/toolchain
+    go install %PKG%/cmd/glacier-toolchain
     GOTO DONE
 
 :DEP

@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/cmd/generate"
-	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/cmd/project"
-	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/cmd/protobuf"
+	"github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain/cmd/generate"
+	"github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain/cmd/project"
+	"github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain/cmd/protobuf"
 	"os"
 )
 

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../glacier-auth/.idea/glacier-auth.iml" filepath="$PROJECT_DIR$/../glacier-auth/.idea/glacier-auth.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/glacier-toolchain.iml" filepath="$PROJECT_DIR$/.idea/glacier-toolchain.iml" />
     </modules>
   </component>
