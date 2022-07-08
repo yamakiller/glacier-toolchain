@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/yamakiller/glacier-toolchain/cmd/tbx/cmd/generate"
-	"github.com/yamakiller/glacier-toolchain/cmd/tbx/cmd/project"
-	"github.com/yamakiller/glacier-toolchain/cmd/tbx/cmd/protobuf"
+	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/cmd/generate"
+	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/cmd/project"
+	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/cmd/protobuf"
 	"os"
 )
 
@@ -13,9 +13,9 @@ var verse bool
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "tbx",
-	Short: "tbx 分布式服务构建工具",
-	Long:  `tbx 分布式服务构建工具`,
+	Use:   "toolchain",
+	Short: "toolchain 分布式服务构建工具",
+	Long:  `toolchain 分布式服务构建工具`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()
 	},

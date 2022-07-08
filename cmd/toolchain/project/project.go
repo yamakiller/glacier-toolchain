@@ -21,7 +21,7 @@ import (
 
 var templates embed.FS
 
-const ProjectSettingFilePath = ".tbx.yaml"
+const ProjectSettingFilePath = ".toolchain.yaml"
 
 // LoadConfigFromCLI 配置
 func LoadConfigFromCLI() (*Project, error) {
@@ -35,7 +35,7 @@ func LoadConfigFromCLI() (*Project, error) {
 	err := survey.AskOne(
 		&survey.Input{
 			Message: "请输入项目包名称:",
-			Default: "gitee.com/go-course/glacier-devops-tbx-demo",
+			Default: "gitee.com/go-course/glacier-toolchain-demo",
 		},
 		&p.PKG,
 		survey.WithValidator(survey.Required),

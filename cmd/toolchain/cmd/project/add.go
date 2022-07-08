@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/spf13/cobra"
-	"github.com/yamakiller/glacier-toolchain/cmd/tbx/project"
+	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/project"
 )
 
-// InitCmd 初始化系统
-var initCmd = &cobra.Command{
-	Use:   "init",
+// addCmd 初始化系统
+var addCmd = &cobra.Command{
+	Use:   "add",
 	Short: "初始化",
-	Long:  `初始化一个tbx项目`,
+	Long:  `初始化一个toolchain项目`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		p, err := project.LoadConfigFromCLI()
 		if err != nil {
@@ -31,5 +31,5 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.AddCommand(initCmd)
+	Cmd.AddCommand(addCmd)
 }

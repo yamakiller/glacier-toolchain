@@ -3,7 +3,7 @@ package generate
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/yamakiller/glacier-toolchain/cmd/tbx/enum"
+	"github.com/yamakiller/glacier-toolchain/cmd/toolchain/enum"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
