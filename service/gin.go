@@ -8,11 +8,11 @@ import (
 )
 
 var (
-	ginServices = map[string]GinService{}
+	ginServices = map[string]IGinService{}
 )
 
-//GinService HTTPService Http服务的实例
-type GinService interface {
+//IGinService HTTPService Http服务的实例
+type IGinService interface {
 	Registry(gin.IRouter)
 	Config() error
 	Name() string
@@ -20,7 +20,7 @@ type GinService interface {
 }
 
 // RegistryGinService 服务实例注册
-func RegistryGinService(srv GinService) {
+func RegistryGinService(srv IGinService) {
 	// 已经注册的服务禁止再次注册
 	_, ok := ginServices[srv.Name()]
 	if ok {
@@ -38,7 +38,7 @@ func LoadedGinService() (svs []string) {
 	return
 }
 
-func GetGinService(name string) GinService {
+func GetGinService(name string) IGinService {
 	serv, ok := ginServices[name]
 	if !ok {
 		panic(fmt.Sprintf("http app %s not registed", name))

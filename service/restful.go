@@ -8,11 +8,11 @@ import (
 )
 
 var (
-	restfulServices = map[string]RESTfulService{}
+	restfulServices = map[string]IRESTfulService{}
 )
 
-// RESTfulService Http服务的实例
-type RESTfulService interface {
+// IRESTfulService Http服务的实例
+type IRESTfulService interface {
 	Registry(*restful.WebService)
 	Config() error
 	Name() string
@@ -20,7 +20,7 @@ type RESTfulService interface {
 }
 
 // RegistryRESTfulService 服务实例注册
-func RegistryRESTfulService(app RESTfulService) {
+func RegistryRESTfulService(app IRESTfulService) {
 	// 已经注册的服务禁止再次注册
 	_, ok := restfulServices[app.Name()]
 	if ok {
@@ -38,13 +38,13 @@ func LoadedRESTfulService() (svs []string) {
 	return
 }
 
-func GetRESTfulService(name string) RESTfulService {
-	app, ok := restfulServices[name]
+func GetRESTfulService(name string) IRESTfulService {
+	srv, ok := restfulServices[name]
 	if !ok {
 		panic(fmt.Sprintf("http app %s not registed", name))
 	}
 
-	return app
+	return srv
 }
 
 // LoadRESTfulService 装载所有的http service

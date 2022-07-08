@@ -3,17 +3,17 @@ package service
 import "fmt"
 
 var (
-	internalServices = map[string]InternalService{}
+	internalServices = map[string]IInternalService{}
 )
 
-// InternalService 内部服务实例, 不需要暴露
-type InternalService interface {
+// IInternalService 内部服务实例, 不需要暴露
+type IInternalService interface {
 	Config() error
 	Name() string
 }
 
 // RegistryInternalService 服务实例注册
-func RegistryInternalService(srv InternalService) {
+func RegistryInternalService(srv IInternalService) {
 	// 已经注册的服务禁止再次注册
 	_, ok := internalServices[srv.Name()]
 	if ok {
@@ -31,11 +31,11 @@ func LoadedInternalService() (svs []string) {
 	return
 }
 
-func GetInternalService(name string) InternalService {
-	app, ok := internalServices[name]
+func GetInternalService(name string) IInternalService {
+	srv, ok := internalServices[name]
 	if !ok {
 		panic(fmt.Sprintf("internal app %s not registed", name))
 	}
 
-	return app
+	return srv
 }

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package yamakiller.glacier-toolchain.page;
+package yamakiller.glacier.toolchain.page;
 option go_package = "github.com/yamakiller/glacier-toolchain/http/request";
 
 message PageRequest {

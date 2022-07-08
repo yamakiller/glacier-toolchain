@@ -7,18 +7,18 @@ import (
 )
 
 var (
-	grpcServices = map[string]GRPCService{}
+	grpcServices = map[string]IGRPCService{}
 )
 
-// GRPCService GRPC服务的实例
-type GRPCService interface {
+// IGRPCService GRPC服务的实例
+type IGRPCService interface {
 	Registry(*grpc.Server)
 	Config() error
 	Name() string
 }
 
 // RegistryGrpcService 服务实例注册
-func RegistryGrpcService(srv GRPCService) {
+func RegistryGrpcService(srv IGRPCService) {
 	// 已经注册的服务禁止再次注册
 	_, ok := grpcServices[srv.Name()]
 	if ok {
@@ -36,7 +36,7 @@ func LoadedGrpcService() (svs []string) {
 	return
 }
 
-func GetGrpcService(name string) GRPCService {
+func GetGrpcService(name string) IGRPCService {
 	srv, ok := grpcServices[name]
 	if !ok {
 		panic(fmt.Sprintf("grpc app %s not registed", name))

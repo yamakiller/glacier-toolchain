@@ -32,5 +32,5 @@ func Execute() {
 
 func init() {
 	RootCmd.AddCommand(project.Cmd, generate.Cmd, protobuf.Cmd)
-	RootCmd.PersistentFlags().BoolVarP(&verse, "version", "v", false, "the glacier devops tbx version")
+	RootCmd.PersistentFlags().BoolVarP(&verse, "version", "v", false, "the glacier toolchain version")
 }

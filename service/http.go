@@ -7,18 +7,18 @@ import (
 )
 
 var (
-	httpServices = map[string]HTTPService{}
+	httpServices = map[string]IHTTPService{}
 )
 
-// HTTPService Http服务的实例
-type HTTPService interface {
+// IHTTPService Http服务的实例
+type IHTTPService interface {
 	Registry(router.SubRouter)
 	Config() error
 	Name() string
 }
 
-// RegistryHttpApp 服务实例注册
-func RegistryHttpApp(srv HTTPService) {
+// RegistryHttpService 服务实例注册
+func RegistryHttpService(srv IHTTPService) {
 	// 已经注册的服务禁止再次注册
 	_, ok := httpServices[srv.Name()]
 	if ok {
@@ -36,13 +36,13 @@ func LoadedHttpService() (svs []string) {
 	return
 }
 
-func GetHttpService(name string) HTTPService {
-	app, ok := httpServices[name]
+func GetHttpService(name string) IHTTPService {
+	srv, ok := httpServices[name]
 	if !ok {
 		panic(fmt.Sprintf("http app %s not registed", name))
 	}
 
-	return app
+	return srv
 }
 
 // LoadHttpService 装载所有的http service

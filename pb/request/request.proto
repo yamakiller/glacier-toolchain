@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package yamakiller.glacier-toolchain.request;
+package yamakiller.glacier.toolchain.request;
 option go_package = "github.com/yamakiller/glacier-toolchain/pb/request";
 
 enum UpdateMode {
