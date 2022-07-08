@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package yamakiller.glacier-toolchain.resource;
+option go_package = "github.com/yamakiller/glacier-toolchain/pb/resource";
+
+enum VisiableMode {
+  // 默认Namespace可见
+  NAMESPACE = 0;
+  // 全局可见
+  GLOBAL = 1;
+}
