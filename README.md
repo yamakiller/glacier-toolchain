@@ -194,3 +194,7 @@ func (t *Enum) UnmarshalJSON(b []byte) error {
 	return nil
 }
 ```
+创建项目
+```
+glacier-toolchain project init
+```

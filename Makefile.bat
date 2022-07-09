@@ -43,7 +43,7 @@ IF %1==gen GOTO GEN
     .\bin\protoc.exe -I=. -I=%GOPATH%\src -I=bin\protobuf\include --go_out=. --go_opt=module=%PKG% --go-grpc_out=. --go-grpc_opt=module=%PKG% pb/resource/*.proto
     .\bin\protoc.exe -I=. -I=%GOPATH%\src -I=bin\protobuf\include --go_out=. --go_opt=module=%PKG% --go-grpc_out=. --go-grpc_opt=module=%PKG% pb/response/*.proto
 
-    ::protoc-go-inject-tag -input=pb/http/*.pb.go
+    protoc-go-inject-tag -input=pb/http/*.pb.go
     GOTO DONE
 :DONE
 ECHO Done!

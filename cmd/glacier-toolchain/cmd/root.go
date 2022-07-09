@@ -13,9 +13,9 @@ var verse bool
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "toolchain",
-	Short: "toolchain 分布式服务构建工具",
-	Long:  `toolchain 分布式服务构建工具`,
+	Use:   "glacier-toolchain",
+	Short: "glacier-toolchain 分布式服务构建工具",
+	Long:  `glacier-toolchain 分布式服务构建工具`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()
 	},
