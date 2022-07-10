@@ -19,6 +19,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+//go:embed templates/*
 var templates embed.FS
 
 const ProjectSettingFilePath = ".toolchain.yaml"
@@ -57,16 +58,16 @@ func LoadConfigFromCLI() (*Project, error) {
 	}
 
 	// 选择是否接入权限中心
-	enableGlacierDevopsAuth := &survey.Confirm{
+	enableGlacierAuth := &survey.Confirm{
 		Message: "是否接入权限中心[glacier auth]",
 	}
-	err = survey.AskOne(enableGlacierDevopsAuth, &p.EnableGlacierDevOpsAuth)
+	err = survey.AskOne(enableGlacierAuth, &p.EnableGlacierAuth)
 	if err != nil {
 		return nil, err
 	}
 
-	if p.EnableGlacierDevOpsAuth {
-		p.LoadGlacierDevopsAuthConfig()
+	if p.EnableGlacierAuth {
+		p.LoadGlacierAuthConfig()
 	}
 
 	// 选择使用的存储
@@ -138,27 +139,27 @@ func LoadProjectFromYAML(path string) (*Project, error) {
 }
 
 type Project struct {
-	PKG                     string             `yaml:"pkg"`
-	Name                    string             `yaml:"name"`
-	Description             string             `yaml:"description"`
-	EnableGlacierDevOpsAuth bool               `yaml:"enable_glacier_devops_auth"`
-	GlacierDevOpsAuth       *GlacierDevopsAuth `yaml:"-"`
-	EnableMySQL             bool               `yaml:"enable_mysql"`
-	MySQL                   *MySQL             `yaml:"-"`
-	EnablePostgreSQL        bool               `yaml:"enable_postgre_sql"`
-	PostgreSQL              *PostgreSQL        `yaml:"_"`
-	EnableMongoDB           bool               `yaml:"enable_mongodb"`
-	MongoDB                 *MongoDB           `yaml:"-"`
-	GenExample              bool               `yaml:"gen_example"`
-	HttpFramework           string             `yaml:"http_framework"`
-	EnableCache             bool               `yaml:"enable_cache"`
+	PKG               string       `yaml:"pkg"`
+	Name              string       `yaml:"name"`
+	Description       string       `yaml:"description"`
+	EnableGlacierAuth bool         `yaml:"enable_glacier_auth"`
+	GlacierAuth       *GlacierAuth `yaml:"-"`
+	EnableMySQL       bool         `yaml:"enable_mysql"`
+	MySQL             *MySQL       `yaml:"-"`
+	EnablePostgreSQL  bool         `yaml:"enable_postgre_sql"`
+	PostgreSQL        *PostgreSQL  `yaml:"_"`
+	EnableMongoDB     bool         `yaml:"enable_mongodb"`
+	MongoDB           *MongoDB     `yaml:"-"`
+	GenExample        bool         `yaml:"gen_example"`
+	HttpFramework     string       `yaml:"http_framework"`
+	EnableCache       bool         `yaml:"enable_cache"`
 
 	render     *template.Template
 	createdDir map[string]bool
 }
 
-// GlacierDevopsAuth 鉴权服务配置
-type GlacierDevopsAuth struct {
+// GlacierAuth 鉴权服务配置
+type GlacierAuth struct {
 	Host         string
 	Port         string
 	ClientID     string
@@ -199,9 +200,9 @@ func (p *Project) Init() error {
 
 		// 处理是否生成样例代码
 		if p.GenExample {
-			if strings.Contains(path, "apps/book") {
+			if strings.Contains(path, "apps/example") {
 				// 只生成对应框架的样例代码
-				if strings.Contains(path, "apps/book/api") && p.HttpFramework != "" {
+				if strings.Contains(path, "apps/example/api") && p.HttpFramework != "" {
 					if !strings.HasSuffix(path, fmt.Sprintf(".%s.tpl", p.HttpFramework)) {
 						return nil
 					}
@@ -217,7 +218,7 @@ func (p *Project) Init() error {
 		}
 
 		// 如果不是使用MySQL, 不需要渲染的文件
-		if strings.Contains(path, "apps/book/impl/sql") && !p.EnableMySQL {
+		if strings.Contains(path, "apps/example/impl/sql") && !p.EnableMySQL {
 			return nil
 		}
 

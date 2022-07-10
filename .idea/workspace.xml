@@ -4,31 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="增加memory缓存">
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.gin.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.go-restful.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.httprouter.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.gin.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.httprouter.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/app.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/dao.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/example.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/impl.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/sql.go.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/pb/example.proto.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sqlbuilder/builder.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sqlbuilder/join.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sqlbuilder/order.go" afterDir="false" />
+    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="增加示例功能模块">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/project/add.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/project/add.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/cmd/init.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/cmd/init.go.tpl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/docs/schema/tables.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/docs/schema/tables.sql.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/all/api.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/all/api.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/all/impl.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/all/impl.go.tpl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +77,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="增加memory缓存" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加memory缓存" />
+    <MESSAGE value="增加示例功能模块" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加示例功能模块" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

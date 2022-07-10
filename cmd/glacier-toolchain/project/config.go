@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func (p *Project) LoadGlacierDevopsAuthConfig() error {
-	p.GlacierDevOpsAuth = &GlacierDevopsAuth{}
+func (p *Project) LoadGlacierAuthConfig() error {
+	p.GlacierAuth = &GlacierAuth{}
 
 	var glacierDevOpsAuthAddr string
 	err := survey.AskOne(
@@ -22,8 +22,8 @@ func (p *Project) LoadGlacierDevopsAuthConfig() error {
 	}
 	if strings.Contains(glacierDevOpsAuthAddr, ":") {
 		hp := strings.Split(glacierDevOpsAuthAddr, ":")
-		p.GlacierDevOpsAuth.Host = hp[0]
-		p.GlacierDevOpsAuth.Port = hp[1]
+		p.GlacierAuth.Host = hp[0]
+		p.GlacierAuth.Port = hp[1]
 	}
 
 	err = survey.AskOne(
@@ -31,7 +31,7 @@ func (p *Project) LoadGlacierDevopsAuthConfig() error {
 			Message: "glacier devops auth Client ID:",
 			Default: "",
 		},
-		&p.GlacierDevOpsAuth.ClientID,
+		&p.GlacierAuth.ClientID,
 		survey.WithValidator(survey.Required),
 	)
 	if err != nil {
@@ -42,7 +42,7 @@ func (p *Project) LoadGlacierDevopsAuthConfig() error {
 		&survey.Password{
 			Message: "glacier devops auth Client Secret:",
 		},
-		&p.GlacierDevOpsAuth.ClientSecret,
+		&p.GlacierAuth.ClientSecret,
 		survey.WithValidator(survey.Required),
 	)
 	if err != nil {
