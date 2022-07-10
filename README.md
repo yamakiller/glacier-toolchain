@@ -63,7 +63,9 @@ type Enum uint
 ```
 执行生成器  
 ```
-go generate ./...
+glacier-toolchain generate enum_test.pb.go
+
+glacier-toolchain generate -m -p enum_test.pb.go
 ```
 
 生成如下:  
@@ -197,4 +199,8 @@ func (t *Enum) UnmarshalJSON(b []byte) error {
 创建项目
 ```
 glacier-toolchain project init
+```
+构建HTTP服务
+```
+protoc --proto_path=. --proto_path=%GOPATH%/src --go-http_out=../../(输出路径) xxxx.proto --go-http_opt=module=github.com/yamakiller/glacier-xxx(包名)
 ```

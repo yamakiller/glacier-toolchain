@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.5
+	github.com/bluele/gcache v0.0.2
 	github.com/decred/dcrd/dcrec/secp256k1/v3 v3.0.0
 	github.com/emicklei/go-restful/v3 v3.8.0
 	github.com/gin-gonic/gin v1.8.1

@@ -10,7 +10,7 @@ import (
 
 const version = "0.1.0"
 
-var _ *bool
+var requireUnimplemented *bool
 
 func main() {
 	showVersion := flag.Bool("version",
@@ -24,7 +24,7 @@ func main() {
 	}
 
 	var flags flag.FlagSet
-	_ = flags.Bool("require_unimplemented_servers", true, "set to false to match legacy behavior")
+	requireUnimplemented = flags.Bool("require_unimplemented_servers", true, "set to false to match legacy behavior")
 
 	protogen.Options{
 		ParamFunc: flags.Set,
