@@ -7,8 +7,13 @@ import (
 	"time"
 
 {{ if $.EnableMySQL -}}
-	"database/sql"
- 	_ "github.com/go-sql-driver/mysql"
+    "gorm.io/driver/mysql"
+    "gorm.io/gorm"
+{{- end }}
+
+{{ if $.EnablePostgreSQL -}}
+    "gorm.io/driver/postgres"
+    "gorm.io/gorm"
 {{- end }}
 
 {{ if $.EnableGlacierAuth -}}
@@ -28,10 +33,13 @@ import (
 
 var (
 {{ if $.EnableMySQL -}}
-	db *sql.DB
+	db *gorm.DB
+{{- end }}
+{{ if $.EnablePostgreSQL -}}
+    db *gorm.DB
 {{- end }}
 {{ if $.EnableMongoDB -}}
-	mgoclient *mongo.Client
+	mongoClient *mongo.Client
 {{- end }}
 )
 
@@ -41,6 +49,9 @@ func newConfig() *Config {
 		Log:     newDefaultLog(),
 {{ if $.EnableMySQL -}}
 		MySQL:   newDefaultMySQL(),
+{{- end }}
+{{ if $.EnablePostgreSQL -}}
+        PostgreSQL:: newDefaultPostgreSQL(),
 {{- end }}
 {{ if $.EnableMongoDB -}}
 		Mongo:   newDefaultMongoDB(),
@@ -60,6 +71,9 @@ type Config struct {
 	Log   *log   `toml:"log"`
 {{ if $.EnableMySQL -}}
 	MySQL *mysql `toml:"mysql"`
+{{- end }}
+{{ if $.EnablePostgreSQL -}}
+    PostgreSQL *postgresql `toml:"postgresql"`
 {{- end }}
 {{ if $.EnableMongoDB -}}
 	Mongo *mongodb `toml:"mongodb"`
@@ -196,15 +210,15 @@ func (m *mongodb) Client() (*mongo.Client, error) {
 	// 加载全局数据量单例
 	m.lock.Lock()
 	defer m.lock.Unlock()
-	if mgoclient == nil {
+	if mongoClient == nil {
 		conn, err := m.getClient()
 		if err != nil {
 			return nil, err
 		}
-		mgoclient = conn
+		mongoClient = conn
 	}
 
-	return mgoclient, nil
+	return mongoClient, nil
 }
 
 func (m *mongodb) GetDB() (*mongo.Database, error) {
@@ -269,30 +283,96 @@ func newDefaultMySQL() *mysql {
 }
 
 // getDBConn use to get db connection pool
-func (m *mysql) getDBConn() (*sql.DB, error) {
+func (m *mysql) getDBConn() (*gorm.DB, error) {
 	var err error
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&multiStatements=true", m.UserName, m.Password, m.Host, m.Port, m.Database)
-	db, err := sql.Open("mysql", dsn)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&multiStatements=true",
+	                   m.UserName, m.Password, m.Host, m.Port, m.Database)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("connect to mysql<%s> error, %s", dsn, err.Error())
 	}
-	db.SetMaxOpenConns(m.MaxOpenConn)
-	db.SetMaxIdleConns(m.MaxIdleConn)
+
+	sqlDb := db.DB()
+	sqlDb.SetMaxOpenConns(m.MaxOpenConn)
+	sqlDb.SetMaxIdleConns(m.MaxIdleConn)
 	if m.MaxLifeTime != 0 {
-		db.SetConnMaxLifetime(time.Second * time.Duration(m.MaxLifeTime))
+		sqlDb.SetConnMaxLifetime(time.Second * time.Duration(m.MaxLifeTime))
 	}
 	if m.MaxIdleConn != 0 {
-		db.SetConnMaxIdleTime(time.Second * time.Duration(m.MaxIdleTime))
+		sqlDb.SetConnMaxIdleTime(time.Second * time.Duration(m.MaxIdleTime))
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := db.PingContext(ctx); err != nil {
+	if err := sqlDb.PingContext(ctx); err != nil {
 		return nil, fmt.Errorf("ping mysql<%s> error, %s", dsn, err.Error())
 	}
 	return db, nil
 }
-func (m *mysql) GetDB() (*sql.DB, error) {
+func (m *mysql) GetDB() (*gorm.DB, error) {
+	// 加载全局数据量单例
+	m.lock.Lock()
+	defer m.lock.Unlock()
+	if db == nil {
+		conn, err := m.getDBConn()
+		if err != nil {
+			return nil, err
+		}
+		db = conn
+	}
+	return db, nil
+}
+{{- end }}
+{{ if $.EnablePostgreSQL -}}
+type postgresql struct {
+	Host        string `toml:"host" env:"POSTGRE_HOST"`
+	Port        string `toml:"port" env:"POSTGRE_PORT"`
+	UserName    string `toml:"username" env:"POSTGRE_USERNAME"`
+	Password    string `toml:"password" env:"POSTGRE_PASSWORD"`
+	Database    string `toml:"database" env:"POSTGRE_DATABASE"`
+	MaxOpenConn int    `toml:"max_open_conn" env:"POSTGRE_MAX_OPEN_CONN"`
+	MaxIdleConn int    `toml:"max_idle_conn" env:"POSTGRE_MAX_IDLE_CONN"`
+	MaxLifeTime int    `toml:"max_life_time" env:"POSTGRE_MAX_LIFE_TIME"`
+	MaxIdleTime int    `toml:"max_idle_time" env:"POSTGRE_MAX_IDLE_TIME"`
+	lock        sync.Mutex
+}
+func newDefaultPostgreSQL() *postgresql {
+	return &postgresql{
+		Database:    "{{.Name}}",
+		Host:        "127.0.0.1",
+		Port:        "9902",
+		MaxOpenConn: 200,
+		MaxIdleConn: 100,
+	}
+}
+// getDBConn use to get db connection pool
+func (m *postgresql) getDBConn() (*gorm.DB, error) {
+    var err error
+    dsn := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Shanghai",
+                        m.UserName, m.Password, m.Host, m.Port, m.Database)
+    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        return nil, fmt.Errorf("connect to PostgreSQL<%s> error, %s", dsn, err.Error())
+    }
+
+    sqlDb := db.DB()
+    sqlDb.SetMaxOpenConns(m.MaxOpenConn)
+    sqlDb.SetMaxIdleConns(m.MaxIdleConn)
+    if m.MaxLifeTime != 0 {
+        sqlDb.SetConnMaxLifetime(time.Second * time.Duration(m.MaxLifeTime))
+    }
+    if m.MaxIdleConn != 0 {
+        sqlDb.SetConnMaxIdleTime(time.Second * time.Duration(m.MaxIdleTime))
+    }
+
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+    if err := sqlDb.PingContext(ctx); err != nil {
+        return nil, fmt.Errorf("ping PostgreSQL<%s> error, %s", dsn, err.Error())
+    }
+    return db, nil
+}
+func (m *postgresql) GetDB() (*gorm.DB, error) {
 	// 加载全局数据量单例
 	m.lock.Lock()
 	defer m.lock.Unlock()

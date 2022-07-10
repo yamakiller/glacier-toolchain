@@ -7,10 +7,19 @@ import (
 	"io/ioutil"
 	"time"
 {{- end }}
+{{ if $.EnablePostgreSQL -}}
+	"context"
+	"fmt"
+	"io/ioutil"
+	"time"
+{{- end }}
 
 	"github.com/spf13/cobra"
 
 {{ if $.EnableMySQL -}}
+	"{{.PKG}}/conf"
+{{- end }}
+{{ if $.EnablePostgreSQL -}}
 	"{{.PKG}}/conf"
 {{- end }}
 )
@@ -36,6 +45,12 @@ var initCmd = &cobra.Command{
 			return err
 		}
 {{- end }}
+{{ if $.EnablePostgreSQL -}}
+        err := createTables()
+        if err != nil {
+            return err
+        }
+{{- end }}
 
 		return nil
 	},
@@ -43,13 +58,14 @@ var initCmd = &cobra.Command{
 
 {{ if $.EnableMySQL -}}
 func createTables() error {
-	db, err := conf.C().MySQL.GetDB()
+	db, err := conf.Instance().MySQL.GetDB()
 	if err != nil {
 		return err
 	}
 
-	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancelfunc()
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelFunc()
+
 
 	// 读取SQL文件
 	sqlFile, err := ioutil.ReadFile(createTableFilePath)
@@ -61,7 +77,36 @@ func createTables() error {
 	fmt.Println(string(sqlFile))
 
 	// 执行SQL文件
-	_, err = db.ExecContext(ctx, string(sqlFile))
+	_, err = db.WithContext(ctx).Exec(string(sqlFile))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+{{- end }}
+
+{{ if $.EnablePostgreSQL -}}
+func createTables() error {
+	db, err := conf.Instance().PostgreSQL.GetDB()
+	if err != nil {
+		return err
+	}
+
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelFunc()
+
+	// 读取SQL文件
+	sqlFile, err := ioutil.ReadFile(createTableFilePath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("执行的SQL: ")
+	fmt.Println(string(sqlFile))
+
+	// 执行SQL文件
+	_, err = db.WithContext(ctx).Exec(string(sqlFile))
 	if err != nil {
 		return err
 	}
@@ -72,6 +117,9 @@ func createTables() error {
 
 func init() {
 {{ if $.EnableMySQL -}}
+	initCmd.PersistentFlags().StringVarP(&createTableFilePath, "sql-file-path", "s", "docs/schema/tables.sql", "the sql file path")
+{{- end }}
+{{ if $.EnablePostgreSQL -}}
 	initCmd.PersistentFlags().StringVarP(&createTableFilePath, "sql-file-path", "s", "docs/schema/tables.sql", "the sql file path")
 {{- end }}
 	RootCmd.AddCommand(initCmd)

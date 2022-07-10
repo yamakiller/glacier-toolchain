@@ -11,7 +11,7 @@ import (
 var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "初始化",
-	Long:  `初始化一个toolchain项目`,
+	Long:  `初始化一个glacier-toolchain项目`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		p, err := project.LoadConfigFromCLI()
 		if err != nil {

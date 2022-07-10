@@ -73,7 +73,7 @@ func LoadConfigFromCLI() (*Project, error) {
 	choicedDB := ""
 	choiceDB := &survey.Select{
 		Message: "选择数据库类型:",
-		Options: []string{"MySQL", "MongoDB"},
+		Options: []string{"MySQL", "PostgreSQL", "MongoDB"},
 		Default: "MySQL",
 	}
 	err = survey.AskOne(choiceDB, &choicedDB)
@@ -85,6 +85,9 @@ func LoadConfigFromCLI() (*Project, error) {
 	case "MySQL":
 		p.EnableMySQL = true
 		p.LoadMySQLConfig()
+	case "PostgreSQL":
+		p.EnablePostgreSQL = true
+		p.LoadPostgreSQLConfig()
 	case "MongoDB":
 		p.EnableMongoDB = true
 		p.LoadMongoDBConfig()
@@ -142,6 +145,8 @@ type Project struct {
 	GlacierDevOpsAuth       *GlacierDevopsAuth `yaml:"-"`
 	EnableMySQL             bool               `yaml:"enable_mysql"`
 	MySQL                   *MySQL             `yaml:"-"`
+	EnablePostgreSQL        bool               `yaml:"enable_postgre_sql"`
+	PostgreSQL              *PostgreSQL        `yaml:"_"`
 	EnableMongoDB           bool               `yaml:"enable_mongodb"`
 	MongoDB                 *MongoDB           `yaml:"-"`
 	GenExample              bool               `yaml:"gen_example"`
@@ -161,6 +166,14 @@ type GlacierDevopsAuth struct {
 }
 
 type MySQL struct {
+	Host     string
+	Port     string
+	Database string
+	UserName string
+	Password string
+}
+
+type PostgreSQL struct {
 	Host     string
 	Port     string
 	Database string

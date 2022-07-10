@@ -112,6 +112,66 @@ func (p *Project) LoadMySQLConfig() error {
 	return nil
 }
 
+func (p *Project) LoadPostgreSQLConfig() error {
+	p.PostgreSQL = &PostgreSQL{}
+
+	var postgreSQLAddr string
+	err := survey.AskOne(
+		&survey.Input{
+			Message: "PostgreSQL服务地址:",
+			Default: "127.0.0.1:9902",
+		},
+		&postgreSQLAddr,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+
+	if strings.Contains(postgreSQLAddr, ":") {
+		hp := strings.Split(postgreSQLAddr, ":")
+		p.PostgreSQL.Host = hp[0]
+		p.PostgreSQL.Port = hp[1]
+	}
+
+	err = survey.AskOne(
+		&survey.Input{
+			Message: "数据库名称:",
+			Default: "",
+		},
+		&p.PostgreSQL.Database,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+
+	err = survey.AskOne(
+		&survey.Input{
+			Message: "用户:",
+			Default: "",
+		},
+		&p.PostgreSQL.UserName,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+
+	err = survey.AskOne(
+		&survey.Password{
+			Message: "密码:",
+		},
+		&p.PostgreSQL.Password,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (p *Project) LoadMongoDBConfig() error {
 	p.MongoDB = &MongoDB{}
 

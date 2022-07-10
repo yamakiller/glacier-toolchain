@@ -4,18 +4,31 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/cache/memory/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cache/memory/memory.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/glacier-toolchain.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/glacier-toolchain.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/protoc-gen-go-http/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/protoc-gen-go-http/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="增加memory缓存">
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.gin.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.go-restful.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.httprouter.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/example.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.gin.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.httprouter.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/app.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/dao.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/example.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/impl.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/sql.go.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/pb/example.proto.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sqlbuilder/builder.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sqlbuilder/join.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sqlbuilder/order.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/project/add.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/project/add.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/cmd/init.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/cmd/init.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/docs/schema/tables.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/docs/schema/tables.sql.tpl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,12 +53,15 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2BjMuZX54BeMUxeRylYktjbHo6z" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -57,6 +73,10 @@
     <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../glacier-center" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -72,6 +92,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="增加memory缓存" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加memory缓存" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
