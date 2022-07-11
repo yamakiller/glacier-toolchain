@@ -65,13 +65,13 @@ message ExampleSet {
 }
 
 message DescribeExampleRequest {
-    // book id
+    // example id
     // @gotags: json:"id"
     string id = 1;
 }
 
 message UpdateExampleRequest {
-    // book id
+    // example id
     // @gotags: json:"id"
     string id = 1;
     // 更新模式
@@ -89,7 +89,7 @@ message UpdateExampleRequest {
 }
 
 message DeleteExampleRequest {
-    // book id
+    // example id
     // @gotags: json:"id"
     string id = 1;
 }

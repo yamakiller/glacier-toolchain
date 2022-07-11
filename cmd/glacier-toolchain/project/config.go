@@ -11,7 +11,7 @@ func (p *Project) LoadGlacierAuthConfig() error {
 	var glacierDevOpsAuthAddr string
 	err := survey.AskOne(
 		&survey.Input{
-			Message: "glacier devops auth GRPC服务地址:",
+			Message: "glacier auth GRPC服务地址:",
 			Default: "127.0.0.1:18050",
 		},
 		&glacierDevOpsAuthAddr,
@@ -28,7 +28,7 @@ func (p *Project) LoadGlacierAuthConfig() error {
 
 	err = survey.AskOne(
 		&survey.Input{
-			Message: "glacier devops auth Client ID:",
+			Message: "glacier auth Client ID:",
 			Default: "",
 		},
 		&p.GlacierAuth.ClientID,
@@ -40,7 +40,7 @@ func (p *Project) LoadGlacierAuthConfig() error {
 
 	err = survey.AskOne(
 		&survey.Password{
-			Message: "glacier devops auth Client Secret:",
+			Message: "glacier auth Client Secret:",
 		},
 		&p.GlacierAuth.ClientSecret,
 		survey.WithValidator(survey.Required),

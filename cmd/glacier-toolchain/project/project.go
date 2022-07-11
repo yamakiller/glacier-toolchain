@@ -94,6 +94,15 @@ func LoadConfigFromCLI() (*Project, error) {
 		p.LoadMongoDBConfig()
 	}
 
+	// 选择是否开启缓存
+	enableCache := &survey.Confirm{
+		Message: "是否开始缓存",
+	}
+	err = survey.AskOne(enableCache, &p.EnableCache)
+	if err != nil {
+		return nil, err
+	}
+
 	// 选择是否生成样例
 	genExample := &survey.Confirm{
 		Message: "生成样例代码",

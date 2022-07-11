@@ -36,7 +36,7 @@ func (s *service) CreateExample(ctx context.Context, req *example.CreateExampleR
     return ins, nil
 }
 
-func (s *service) QueryExample(ctx context.Context, req *book.QueryExampleRequest) (
+func (s *service) QueryExample(ctx context.Context, req *example.QueryExampleRequest) (
 	*example.ExampleSet, error) {
 	query := sqlbuilder.NewQuery(queryExampleSQL)
 	// 支持关键字参数
@@ -67,7 +67,7 @@ func (s *service) QueryExample(ctx context.Context, req *book.QueryExampleReques
             &ins.Data.Name, &ins.Data.Author,
         )
         if err != nil {
-            return nil, exception.NewInternalServerError("query book error, %s", err.Error())
+            return nil, exception.NewInternalServerError("query example error, %s", err.Error())
         }
         set.Add(ins)
     }
@@ -104,15 +104,15 @@ func (s *service) DescribeExample(ctx context.Context, req *example.DescribeExam
 		if err == sql.ErrNoRows {
 			return nil, exception.NewNotFound("%s not found", req.Id)
 		}
-		return nil, exception.NewInternalServerError("describe book error, %s", err.Error())
+		return nil, exception.NewInternalServerError("describe example error, %s", err.Error())
 	}
 
 	return ins, nil
 }
 
-func (s *service) UpdateExample(ctx context.Context, req *book.UpdateExampleRequest) (
+func (s *service) UpdateExample(ctx context.Context, req *example.UpdateExampleRequest) (
 	*example.Example, error) {
-	ins, err := s.DescribeExample(ctx, book.NewDescribeExampleRequest(req.Id))
+	ins, err := s.DescribeExample(ctx, example.NewDescribeExampleRequest(req.Id))
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +169,7 @@ func (s *service) CreateExample(ctx context.Context, req *example.CreateExampleR
 	return ins, nil
 }
 
-func (s *service) DescribeExample(ctx context.Context, req *book.DescribeExampleRequest) (
+func (s *service) DescribeExample(ctx context.Context, req *example.DescribeExampleRequest) (
 	*example.Example, error) {
 	return s.get(ctx, req.Id)
 }
@@ -182,7 +182,7 @@ func (s *service) QueryExample(ctx context.Context, req *example.QueryExampleReq
 
 func (s *service) UpdateExample(ctx context.Context, req *example.UpdateExampleRequest) (
 	*example.Example, error) {
-	ins, err := s.DescribeExample(ctx, book.NewDescribeExampleRequest(req.Id))
+	ins, err := s.DescribeExample(ctx, example.NewDescribeExampleRequest(req.Id))
 	if err != nil {
 		return nil, err
 	}

@@ -14,7 +14,7 @@
     )
 
     type handler struct {
-    	service book.ServiceServer
+    	service example.ServiceServer
     	log     logger.Logger
     }
 
@@ -43,3 +43,4 @@
 
     func init() {
     	toolchain-service.RegistryGinService(h)
+    }

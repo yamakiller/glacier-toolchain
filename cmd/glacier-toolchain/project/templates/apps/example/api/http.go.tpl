@@ -15,12 +15,12 @@ var (
 )
 
 type handler struct {
-	service book.ServiceServer
+	service example.ServiceServer
 	log     logger.Logger
 }
 
 func (h *handler) Config() error {
-	h.log = zap.L().Named(example.AppName)
+	h.log = zap.Instance().Named(example.AppName)
 	h.service = toolchain-service.GetGrpcService(example.AppName).(example.ServiceServer)
 	return nil
 }

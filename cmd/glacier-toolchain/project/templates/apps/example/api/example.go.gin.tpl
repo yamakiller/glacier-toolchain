@@ -8,7 +8,7 @@ import (
 )
 
 func (h *handler) CreateExample(c *gin.Context) {
-	req := book.NewCreateExampleRequest()
+	req := example.NewCreateExampleRequest()
 	if err := c.BindJSON(req); err != nil {
 		response.Failed(c.Writer, err)
 		return
@@ -24,7 +24,7 @@ func (h *handler) CreateExample(c *gin.Context) {
 }
 
 func (h *handler) QueryExample(c *gin.Context) {
-	req := book.NewQueryExampleRequestFromHTTP(c.Request)
+	req := example.NewQueryExampleRequestFromHTTP(c.Request)
 	set, err := h.service.QueryExample(c.Request.Context(), req)
 	if err != nil {
 		response.Failed(c.Writer, err)
@@ -34,7 +34,7 @@ func (h *handler) QueryExample(c *gin.Context) {
 }
 
 func (h *handler) DescribeExample(c *gin.Context) {
-	req := book.NewDescribeExampleRequest(c.Param("id"))
+	req := example.NewDescribeExampleRequest(c.Param("id"))
 	ins, err := h.service.DescribeExample(c.Request.Context(), req)
 	if err != nil {
 		response.Failed(c.Writer, err)
@@ -45,7 +45,7 @@ func (h *handler) DescribeExample(c *gin.Context) {
 }
 
 func (h *handler) PutExample(c *gin.Context) {
-	req := book.NewPutExampleRequest(c.Param("id"))
+	req := example.NewPutExampleRequest(c.Param("id"))
 	if err := c.BindJSON(req.Data); err != nil {
 		response.Failed(c.Writer, err)
 		return
@@ -60,7 +60,7 @@ func (h *handler) PutExample(c *gin.Context) {
 }
 
 func (h *handler) PatchExample(c *gin.Context) {
-	req := book.NewPatchExampleRequest(c.Param("id"))
+	req := example.NewPatchExampleRequest(c.Param("id"))
 	if err := c.BindJSON(req.Data); err != nil {
 		response.Failed(c.Writer, err)
 		return
@@ -75,7 +75,7 @@ func (h *handler) PatchExample(c *gin.Context) {
 }
 
 func (h *handler) DeleteExample(c *gin.Context) {
-	req := book.NewDeleteExampleRequestWithID(c.Param("id"))
+	req := example.NewDeleteExampleRequestWithID(c.Param("id"))
 	set, err := h.service.DeleteExample(c.Request.Context(), req)
 	if err != nil {
 		response.Failed(c.Writer, err)

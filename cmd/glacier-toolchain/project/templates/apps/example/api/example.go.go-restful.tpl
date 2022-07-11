@@ -24,7 +24,7 @@ func (h *handler) CreateExample(r *restful.Request, w *restful.Response) {
 }
 
 func (h *handler) QueryExample(r *restful.Request, w *restful.Response) {
-	req := book.NewQueryExampleRequestFromHTTP(r.Request)
+	req := example.NewQueryExampleRequestFromHTTP(r.Request)
 	set, err := h.service.QueryExample(r.Request.Context(), req)
 	if err != nil {
 		response.Failed(w.ResponseWriter, err)
@@ -34,7 +34,7 @@ func (h *handler) QueryExample(r *restful.Request, w *restful.Response) {
 }
 
 func (h *handler) DescribeExample(r *restful.Request, w *restful.Response) {
-	req := book.NewDescribeExampleRequest(r.PathParameter("id"))
+	req := example.NewDescribeExampleRequest(r.PathParameter("id"))
 	ins, err := h.service.DescribeExample(r.Request.Context(), req)
 	if err != nil {
 		response.Failed(w.ResponseWriter, err)
@@ -45,7 +45,7 @@ func (h *handler) DescribeExample(r *restful.Request, w *restful.Response) {
 }
 
 func (h *handler) UpdateExample(r *restful.Request, w *restful.Response) {
-	req := book.NewPutExampleRequest(r.PathParameter("id"))
+	req := example.NewPutExampleRequest(r.PathParameter("id"))
 	if err := r.ReadEntity(req.Data); err != nil {
 		response.Failed(w.ResponseWriter, err)
 		return

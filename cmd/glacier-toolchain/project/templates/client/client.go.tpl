@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"{{.PKG}}/apps/book"
+	"{{.PKG}}/apps/example"
 )
 
 var (
@@ -27,7 +27,7 @@ func Instance() *ClientSet {
 // NewClient 根据配置信息实例化一个客户端
 func NewClient(conf *kc.Config) (*ClientSet, error) {
 	zap.DevelopmentSetup()
-	log := zap.L()
+	log := zap.Instance()
 	conn, err := grpc.Dial(
 		conf.Address(),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -50,6 +50,6 @@ type ClientSet struct {
 }
 
 // Book服务的SDK
-func (c *ClientSet) Book() book.ServiceClient {
-	return book.NewServiceClient(c.conn)
+func (c *ClientSet) Example() example.ServiceClient {
+	return example.NewServiceClient(c.conn)
 }

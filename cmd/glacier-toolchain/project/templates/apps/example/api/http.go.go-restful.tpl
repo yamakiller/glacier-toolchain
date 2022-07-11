@@ -16,13 +16,13 @@ var (
 )
 
 type handler struct {
-	service book.ServiceServer
+	service example.ServiceServer
 	log     logger.Logger
 }
 
 func (h *handler) Config() error {
 	h.log = zap.Instance().Named(example.AppName)
-	h.service = toolchain-service.GetGrpcService(book.AppName).(book.ServiceServer)
+	h.service = toolchain-service.GetGrpcService(example.AppName).(example.ServiceServer)
 	return nil
 }
 
@@ -38,13 +38,13 @@ func (h *handler) Registry(ws *restful.WebService) {
 	tags := []string{"examples"}
 
 	ws.Route(ws.POST("").To(h.CreateExample).
-		Doc("create a book").
+		Doc("create a example").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(example.CreateExampleRequest{}).
 		Writes(response.NewData(example.Example{})))
 
-	ws.Route(ws.GET("/").To(h.QueryBook).
-		Doc("get all books").
+	ws.Route(ws.GET("/").To(h.QueryExample).
+		Doc("get all examples").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Metadata("action", "list").
 		Reads(example.CreateExampleRequest{}).
