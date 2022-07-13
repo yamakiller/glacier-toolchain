@@ -33,12 +33,14 @@
     }
 
     func (h *handler) Registry(r gin.IRouter) {
+        //TODO: 注册Gin外部接口
+    	/*示例
     	r.POST("/", h.Create{{.CapName}})
     	r.GET("/", h.Query{{.CapName}})
     	r.GET("/:id", h.Describe{{.CapName}})
     	r.PUT("/:id", h.Put{{.CapName}})
     	r.PATCH("/:id", h.Patch{{.CapName}})
-    	r.DELETE("/:id", h.Delete{{.CapName}})
+    	r.DELETE("/:id", h.Delete{{.CapName}})*/
     }
 
     func init() {

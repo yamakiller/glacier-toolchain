@@ -32,12 +32,14 @@ func (h *handler) Name() string {
 func (h *handler) Registry(r router.SubRouter) {
 	rr := r.ResourceRouter("{{.AppName}}s")
 	rr.BasePath("{{.AppName}}s")
+	//TODO: 注册HTTP外部接口
+	/* 示例
 	rr.Handle("POST", "/", h.Create{{.CapName}}).AddLabel(label.Create)
 	rr.Handle("GET", "/", h.Query{{.CapName}}).AddLabel(label.List)
 	rr.Handle("GET", "/:id", h.Describe{{.CapName}}).AddLabel(label.Get)
 	rr.Handle("PUT", "/:id", h.Put{{.CapName}}).AddLabel(label.Update)
 	rr.Handle("PATCH", "/:id", h.Patch{{.CapName}}).AddLabel(label.Update)
-	rr.Handle("DELETE", "/:id", h.Delete{{.CapName}}).AddLabel(label.Delete)
+	rr.Handle("DELETE", "/:id", h.Delete{{.CapName}}).AddLabel(label.Delete)*/
 }
 
 func init() {

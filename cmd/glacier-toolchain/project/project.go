@@ -204,7 +204,6 @@ type Project struct {
 	render     *template.Template
 	createdDir map[string]bool
 }
-
 type ProjectAdd struct {
 	PKG              string
 	AppName          string
@@ -259,7 +258,6 @@ func (p *Project) Init() error {
 			if strings.Contains(path, "apps/example") {
 				// 只生成对应框架的样例代码
 				if strings.Contains(path, "apps/example/api") && p.HttpFramework != "" {
-
 					if !strings.HasSuffix(path, fmt.Sprintf("example.go.%s.tpl", p.HttpFramework)) {
 						return nil
 					}
@@ -565,12 +563,14 @@ func (p *Project) registryAdd(filepath, AppName, mod string) error {
 	if err != nil {
 		return err
 	}
-	str := strings.Replace(string(data), "//<Registry>", `_ "`+p.Name+"/apps/"+AppName+`/`+mod+`"`+"\n\t//<Registry>\n", -1)
-
+	str := string(data)[:strings.LastIndex(string(data), ")")-1] + `_ "` + p.Name + "/apps/" + AppName + `/` + mod + `"` + "\n)"
 	fn, err := os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
-	if err == nil {
-		fn.WriteString(str)
+	if err != nil {
+		return err
 	}
+	defer fn.Close()
+	fn.WriteString(str)
+
 	return nil
 }
 func (p *Project) FuncMap() template.FuncMap {

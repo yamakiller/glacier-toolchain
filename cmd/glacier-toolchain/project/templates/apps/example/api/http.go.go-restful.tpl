@@ -36,7 +36,8 @@ func (h *handler) Version() string {
 
 func (h *handler) Registry(ws *restful.WebService) {
 	tags := []string{"{{.AppName}}s"}
-
+    //TODO: 注册RESTful外部接口
+	/*示例
 	ws.Route(ws.POST("").To(h.Create{{.CapName}}).
 		Doc("create a {{.AppName}}").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
@@ -74,7 +75,7 @@ func (h *handler) Registry(ws *restful.WebService) {
 	ws.Route(ws.DELETE("/{id}").To(h.Delete{{.CapName}}).
 		Doc("delete a {{.AppName}}").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
-		Param(ws.PathParameter("id", "identifier of the {{.AppName}}").DataType("string")))
+		Param(ws.PathParameter("id", "identifier of the {{.AppName}}").DataType("string")))*/
 }
 
 func init() {
