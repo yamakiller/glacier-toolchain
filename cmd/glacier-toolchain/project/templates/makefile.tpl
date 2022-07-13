@@ -69,7 +69,7 @@ gen: ## Init Service
 	@go fmt ./...
 {{ if $.GenExample }}
 	@protoc-go-inject-tag -input=apps/*/*.pb.go
-	@toolchain generate enum -p -m apps/*/*.pb.go
+	@glacier-toolchain generate enum -p -m apps/*/*.pb.go
 {{ end }}
 
 help: ## Display this help screen
