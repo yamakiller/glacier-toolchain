@@ -1,206 +1,101 @@
 # glacier-toolchain
-微服务工具箱, 构建微服务中使用的工具集  
-- http框架: 用于构建领域服务的路由框架, 基于httprouter进行封装
-- 日志处理: 封装zap, 用于日志处理
-- 加密解密: 封装cbc和ecies
-- 服务注册: 服务注册组件
-- 缓存处理: redis用于构建多级对象缓存
-- 链路追踪: glacier-toolchain提供的组件都内置了链路追踪
 
-# 使用说明
-快速安装  
+dfdf
+
+## 架构图
+
+## 项目说明
+
 ```
-go install github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain 
-```
-使用指令
-```
-glacier-toolchain -h
-
-Usage:
-    toolchain [flags]
-    toolchain [command]
-
-Available Commands:
-enum        枚举生成器
-help        显示帮助信息
-init        初始化
-
-Flags:
--h, --help      显示工具帮助信息
--v, --version   显示工具版本信息
-
-Use "glacier-toolchain [command] --help" 显示更多关于命令的帮助信息.
-```
-- 枚举生成器（如下测试用例）
-```
-package enum_test
-
-const (
-// Running (running) todo
-Running Status = iota
-// Stopping (stopping) tdo
-Stopping
-// Stopped (stopped) todo
-Stopped
-// Canceled (canceled) todo
-Canceled
-
-	test11
-)
-
-const (
-// Running (running) todo
-E1 Enum = iota
-// Running (running) todo
-E2
-)
-
-// Status AAA
-// BBB
-type Status uint
-
-type Enum uint
-```
-执行生成器  
-```
-glacier-toolchain generate enum_test.pb.go
-
-glacier-toolchain generate -m -p enum_test.pb.go
+├── protocol                       # 脚手架功能: rpc / http 功能加载
+│   ├── grpc.go
+│   └── http.go
+├── client                         # 脚手架功能: grpc 客户端实现
+│   ├── client.go
+│   └── config.go
+├── cmd                            # 脚手架功能: 处理程序启停参数，加载系统配置文件
+│   ├── root.go
+│   └── start.go
+├── conf                           # 脚手架功能: 配置文件加载
+│   ├── config.go                  # 配置文件定义
+│   ├── load.go                    # 不同的配置加载方式
+│   └── log.go                     # 日志配置文件
+├── dist                           # 脚手架功能: 构建产物
+├── etc                            # 配置文件
+│   ├── xxx.env
+│   └── xxx.toml
+├── apps                            # 具体业务场景的领域包
+│   ├── all
+│   │   |-- grpc.go                # 注册所有GRPC服务模块, 暴露给框架GRPC服务器加载, 注意 导入有先后顺序。
+│   │   |-- http.go                # 注册所有HTTP服务模块, 暴露给框架HTTP服务器加载。
+│   │   └── internal.go            #  注册所有内部服务模块, 无须对外暴露的服务, 用于内部依赖。
+│   ├── example                    # 具体业务场景领域服务 example
+│   │   ├── http                   # http
+│   │   │    ├── example.go        # example 服务的http方法实现，请求参数处理、权限处理、数据响应等
+│   │   │    └── http.go           # 领域模块内的 http 路由处理，向系统层注册http服务
+│   │   ├── impl                   # rpc
+│   │   │    ├── example.go        # example 服务的rpc方法实现，请求参数处理、权限处理、数据响应等
+│   │   │    └── impl.go           # 领域模块内的 rpc 服务注册 ，向系统层注册rpc服务
+│   │   ├──  pb                    # protobuf 定义
+│   │   │     └── example.proto    # example proto 定义文件
+│   │   ├── app.go                 # example app 只定义扩展
+│   │   ├── example.pb.go          # protobuf 生成的文件
+│   │   └── example_grpc.pb.go     # pb/example.proto 生成方法定义
+├── version                        # 程序版本信息
+│   └── version.go
+├── README.md
+├── main.go                        # Go程序唯一入口
+├── Makefile                       # make 命令定义
+└── go.mod                         # go mod 依赖定义
 ```
 
-生成如下:  
+
+## 快速开发
+make脚手架
+```sh
+➜  glacier-toolchain git:(master) ✗ make help
+dep                            Get the dependencies
+lint                           Lint Golang files
+vet                            Run go vet
+test                           Run unittests
+test-coverage                  Run tests with coverage
+build                          Local build
+linux                          Linux build
+run                            Run Server
+clean                          Remove previous build
+help                           Display this help screen
 ```
-package enum_test
 
-import (
-	"bytes"
-	"fmt"
-	"strings"
-)
+1. 使用安装依赖的Protobuf库(文件)
+```sh
+# 把依赖的probuf文件复制到/usr/local/include
 
-var (
-	enumStatusShowMap = map[Status]string{
-		Running:  "Running",
-		Stopping: "Stopping",
-		Stopped:  "Stopped",
-		Canceled: "Canceled",
-		test11:   "test11",
-	}
+# 创建protobuf文件目录
+$ make -pv /usr/local/include/github.com/yamakiller/glacier-toolchain/pb
 
-	enumStatusIDMap = map[string]Status{
-		"Running":  Running,
-		"Stopping": Stopping,
-		"Stopped":  Stopped,
-		"Canceled": Canceled,
-		"test11":   test11,
-	}
-)
+# glacier-toolchain protobuf文件
+$ ls `go env GOPATH`/pkg/mod/github.com/yamakiller/
 
-// ParseStatus Parse Status from string
-func ParseStatus(str string) (Status, error) {
-	key := strings.Trim(string(str), `"`)
-	v, ok := enumStatusIDMap[key]
-	if !ok {
-		return 0, fmt.Errorf("unknown Status: %s", str)
-	}
-
-	return v, nil
-}
-
-// Is todo
-func (t Status) Is(target Status) bool {
-	return t == target
-}
-
-// String stringer
-func (t Status) String() string {
-	v, ok := enumStatusShowMap[t]
-	if !ok {
-		return "unknown"
-	}
-
-	return v
-}
-
-// MarshalJSON 序列化
-func (t Status) MarshalJSON() ([]byte, error) {
-	b := bytes.NewBufferString(`"`)
-	b.WriteString(t.String())
-	b.WriteString(`"`)
-	return b.Bytes(), nil
-}
-
-// UnmarshalJSON 反序列化
-func (t *Status) UnmarshalJSON(b []byte) error {
-	ins, err := ParseStatus(string(b))
-	if err != nil {
-		return err
-	}
-	*t = ins
-	return nil
-}
-
-var (
-	enumEnumShowMap = map[Enum]string{
-		E1: "E1",
-		E2: "E2",
-	}
-
-	enumEnumIDMap = map[string]Enum{
-		"E1": E1,
-		"E2": E2,
-	}
-)
-
-// ParseEnum Parse Enum from string
-func ParseEnum(str string) (Enum, error) {
-	key := strings.Trim(string(str), `"`)
-	v, ok := enumEnumIDMap[key]
-	if !ok {
-		return 0, fmt.Errorf("unknown Status: %s", str)
-	}
-
-	return v, nil
-}
-
-// Is 是否相等
-func (t Enum) Is(target Enum) bool {
-	return t == target
-}
-
-// String stringer
-func (t Enum) String() string {
-	v, ok := enumEnumShowMap[t]
-	if !ok {
-		return "unknown"
-	}
-
-	return v
-}
-
-// MarshalJSON 序列化
-func (t Enum) MarshalJSON() ([]byte, error) {
-	b := bytes.NewBufferString(`"`)
-	b.WriteString(t.String())
-	b.WriteString(`"`)
-	return b.Bytes(), nil
-}
-
-// UnmarshalJSON 反序列化
-func (t *Enum) UnmarshalJSON(b []byte) error {
-	ins, err := ParseEnum(string(b))
-	if err != nil {
-		return err
-	}
-	*t = ins
-	return nil
-}
+# 复制到/usr/local/include
+$ cp -rf pb  /usr/local/include/github.com/yamakiller/glacier-toolchain/pb
 ```
-创建项目
+
+2. 添加配置文件(默认读取位置: etc/glacier-toolchain.toml)
+```sh
+$ 编辑样例配置文件 etc/glacier-toolchain.toml.example
+$ mv etc/glacier-toolchain.toml.example etc/glacier-toolchain.toml
 ```
-glacier-toolchain project init
+
+3. 启动服务
+```sh
+# 编译protobuf文件, 生成代码
+$ make gen
+# 如果是MySQL, 执行SQL语句(docs/schema/tables.sql)
+$ make init
+# 下载项目的依赖
+$ make dep
+# 运行程序
+$ make run
 ```
-构建HTTP服务
-```
-protoc --proto_path=. --proto_path=%GOPATH%/src --go-http_out=../../(输出路径) xxxx.proto --go-http_opt=module=github.com/yamakiller/glacier-xxx(包名)
-```
+
+## 相关文档

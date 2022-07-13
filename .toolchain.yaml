@@ -1,0 +1,11 @@
+pkg: github.com/yamakiller/glacier-toolchain
+name: glacier-toolchain
+description: dfdf
+enable_glacier_auth: true
+enable_mysql: false
+enable_postgre_sql: false
+_: null
+enable_mongodb: true
+gen_example: true
+http_framework: go-restful
+enable_cache: true

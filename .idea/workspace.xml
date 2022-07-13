@@ -4,15 +4,47 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修改模板示例">
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/protobuf/generate-tag.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/protobuf/generate.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/append/pb/append.proto.atpl" afterDir="false" />
+    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="增加协议构建指令">
+      <change afterPath="$PROJECT_DIR$/.toolchain.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/all/api.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/all/impl.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/all/internal.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/example/api/example.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/example/app.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/example/impl/dao.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/example/impl/example.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/example/impl/impl.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/example/pb/example.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/init.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/root.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/start.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/schema/tables.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etc/config.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etc/config.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protocol/grpc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protocol/http.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/swagger/docs.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/version/version.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/project/add.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/project/add.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/protobuf/install.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/cmd/protobuf/install.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.gin.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.gin.tpl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.httprouter.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.httprouter.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/app.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/app.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/dao.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/dao.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/example.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/example.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/impl.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/impl.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/sql.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/impl/sql.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/pb/example.proto.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/pb/example.proto.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/protocol/grpc.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/protocol/grpc.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +115,9 @@
     <MESSAGE value="增加示例功能模块" />
     <MESSAGE value="修改模板示例功能" />
     <MESSAGE value="修改模板示例" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改模板示例" />
+    <MESSAGE value="增加功能添加模板" />
+    <MESSAGE value="增加协议构建指令" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加协议构建指令" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

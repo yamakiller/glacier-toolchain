@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/yamakiller/glacier-toolchain/tools/cli"
 	"go/format"
 	"io/fs"
 	"io/ioutil"
@@ -14,6 +12,9 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/pkg/errors"
+	"github.com/yamakiller/glacier-toolchain/tools/cli"
 
 	"github.com/AlecAivazis/survey/v2"
 	"gopkg.in/yaml.v3"
@@ -162,12 +163,14 @@ func loadProjectFromYAML(path string) (*Project, error) {
 		}
 	}(fp)
 
-	p := &Project{}
+	p := &Project{
+		render:     template.New("project"),
+		createdDir: map[string]bool{},
+	}
 	err = yaml.NewDecoder(fp).Decode(p)
 	if err != nil {
 		return nil, err
 	}
-
 	return p, nil
 }
 
@@ -203,24 +206,12 @@ type Project struct {
 }
 
 type ProjectAdd struct {
-	PKG               string       `yaml:"pkg"`
-	AppName           string       `yaml:"-"`
-	Name              string       `yaml:"name"`
-	Description       string       `yaml:"description"`
-	EnableGlacierAuth bool         `yaml:"enable_glacier_auth"`
-	GlacierAuth       *GlacierAuth `yaml:"-"`
-	EnableMySQL       bool         `yaml:"enable_mysql"`
-	MySQL             *MySQL       `yaml:"-"`
-	EnablePostgreSQL  bool         `yaml:"enable_postgre_sql"`
-	PostgreSQL        *PostgreSQL  `yaml:"_"`
-	EnableMongoDB     bool         `yaml:"enable_mongodb"`
-	MongoDB           *MongoDB     `yaml:"-"`
-	GenExample        bool         `yaml:"gen_example"`
-	HttpFramework     string       `yaml:"http_framework"`
-	EnableCache       bool         `yaml:"enable_cache"`
-
-	render     *template.Template
-	createdDir map[string]bool
+	PKG              string
+	AppName          string
+	CapName          string
+	EnableMySQL      bool
+	EnableMongoDB    bool
+	EnablePostgreSQL bool
 }
 
 // GlacierAuth 鉴权服务配置
@@ -268,7 +259,13 @@ func (p *Project) Init() error {
 			if strings.Contains(path, "apps/example") {
 				// 只生成对应框架的样例代码
 				if strings.Contains(path, "apps/example/api") && p.HttpFramework != "" {
-					if !strings.HasSuffix(path, fmt.Sprintf(".%s.tpl", p.HttpFramework)) {
+
+					if !strings.HasSuffix(path, fmt.Sprintf("example.go.%s.tpl", p.HttpFramework)) {
+						return nil
+					}
+				}
+				if strings.Contains(path, "apps/example/impl") || strings.Contains(path, "apps/example/pb") || strings.Contains(path, "apps/example") {
+					if !strings.HasSuffix(path, ".example.tpl") {
 						return nil
 					}
 				}
@@ -308,6 +305,8 @@ func (p *Project) Init() error {
 			// 去除框架后缀
 			sourceFileName = strings.TrimSuffix(sourceFileName, "."+p.HttpFramework)
 		}
+		// 去除example后缀
+		sourceFileName = strings.TrimSuffix(sourceFileName, ".example")
 
 		return p.rendTemplate(dirName, sourceFileName, string(data))
 	}
@@ -331,6 +330,7 @@ func (p *Project) Init() error {
 	return nil
 }
 
+// Add 创建应用
 func (p *Project) Add() error {
 	var AppName string
 	err := survey.AskOne(
@@ -346,6 +346,76 @@ func (p *Project) Add() error {
 		return err
 	}
 
+	appsPath := path.Join(os.Getenv("GOPATH"), "src", p.PKG, "apps")
+	//判断应用是否重复
+	if isFileExists(path.Join(appsPath, AppName)) {
+		return errors.New("重复应用")
+	}
+
+	//创建应用目录
+	fn := func(path string, d fs.DirEntry, _ error) error {
+		// 不处理目录
+		if d.IsDir() {
+			return nil
+		}
+
+		// 处理是否生成样例代码
+		if strings.Contains(path, "apps/example") {
+			// 只生成对应框架的样例代码
+			if strings.Contains(path, "apps/example/api") && p.HttpFramework != "" {
+				if !strings.HasSuffix(path, fmt.Sprintf(".%s.tpl", p.HttpFramework)) {
+					return nil
+				}
+			}
+			if strings.Contains(path, "apps/example/impl") || strings.Contains(path, "apps/example/pb") || strings.Contains(path, "apps/example") {
+				if strings.HasSuffix(path, ".example.tpl") {
+					return nil
+				}
+			}
+
+		} else {
+			return nil
+		}
+
+		// 如果不是使用MySQL,PostgreSQL, 不需要渲染的文件
+		if strings.Contains(path, "apps/example/impl/sql") && !(p.EnableMySQL || p.EnablePostgreSQL) {
+			return nil
+		}
+
+		// 忽略不是模板的文件
+		if !strings.HasSuffix(d.Name(), ".tpl") {
+			return nil
+		}
+
+		// 读取模板内容
+		data, err := templates.ReadFile(path)
+		if err != nil {
+			return err
+		}
+
+		// 替换templates为项目目录名称
+		target := strings.Replace(path, "templates", p.Name, 1)
+		target = strings.Replace(target, "example", AppName, 1)
+		dirName := filepath.Dir(target)
+		// 去除模版后缀
+		sourceFileName := strings.TrimSuffix(filepath.Base(target), ".tpl")
+		if p.HttpFramework != "" {
+			// 去除框架后缀
+			sourceFileName = strings.TrimSuffix(sourceFileName, "."+p.HttpFramework)
+		}
+
+		return p.rendAdd(dirName, sourceFileName, AppName, string(data))
+	}
+
+	err = fs.WalkDir(templates, "templates", fn)
+	if err != nil {
+		return err
+	}
+	//注册
+	allPath := path.Join(appsPath, "all")
+	p.registryAdd(path.Join(allPath, "api.go"), AppName, "api")
+	p.registryAdd(path.Join(allPath, "impl.go"), AppName, "impl")
+	// p.registryAdd(path.Join(allPath, "internal.go"), AppName, "internal")
 	return nil
 }
 
@@ -424,7 +494,7 @@ func (p *Project) rendTemplate(dir, file, tmpl string) error {
 	buf := bytes.NewBufferString("")
 	err = t.Execute(buf, p)
 	if err != nil {
-		return errors.Wrapf(err, "template data err")
+		return errors.Wrapf(err, "template data err %s", file)
 	}
 
 	var content []byte
@@ -440,7 +510,69 @@ func (p *Project) rendTemplate(dir, file, tmpl string) error {
 
 	return ioutil.WriteFile(filePath, content, 0644)
 }
+func (p *Project) rendAdd(dir, file, AppName, tmpl string) error {
+	if dir != "" {
+		if p.dirNotExist(dir) {
+			err := os.MkdirAll(dir, os.ModePerm)
+			if err != nil {
+				return err
+			}
+			p.createdDir[dir] = true
+		}
+	}
 
+	filePath := ""
+	if dir != "" {
+		filePath = dir + "/" + file
+	} else {
+		filePath = file
+	}
+
+	t, err := p.render.Parse(tmpl)
+	if err != nil {
+		return fmt.Errorf("render %s/%s error, %s", dir, file, err)
+	}
+
+	buf := bytes.NewBufferString("")
+	padd := &ProjectAdd{
+		PKG:              p.PKG,
+		AppName:          AppName,
+		CapName:          strings.ToUpper(string(AppName[0])) + AppName[1:],
+		EnableMySQL:      p.EnableMySQL,
+		EnableMongoDB:    p.EnableMongoDB,
+		EnablePostgreSQL: p.EnablePostgreSQL,
+	}
+	err = t.Execute(buf, padd)
+	if err != nil {
+		return errors.Wrapf(err, "template data err %s", file)
+	}
+
+	var content []byte
+	if path.Ext(file) == "go" {
+		code, err := format.Source(buf.Bytes())
+		if err != nil {
+			return errors.Wrapf(err, "format %s code err", file)
+		}
+		content = code
+	} else {
+		content = buf.Bytes()
+	}
+
+	return ioutil.WriteFile(filePath, content, 0644)
+}
+func (p *Project) registryAdd(filepath, AppName, mod string) error {
+	data, err := os.ReadFile(filepath)
+	if err != nil {
+		return err
+	}
+	str := strings.Replace(string(data), "//<Registry>", `_ "`+p.Name+"/apps/"+AppName+`/`+mod+`"`+"\n\t//<Registry>\n", -1)
+
+	fn, err := os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err == nil {
+		fn.WriteString(str)
+	}
+	return nil
+}
 func (p *Project) FuncMap() template.FuncMap {
 	return template.FuncMap{
 		// []string ==> ["xxx", "xxx"]

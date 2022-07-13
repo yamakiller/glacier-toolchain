@@ -6,7 +6,7 @@
     	"github.com/yamakiller/glacier-toolchain/logger/zap"
     	toolchain-service "github.com/yamakiller/glacier-toolchain/service"
 
-    	"{{.PKG}}/apps/example"
+    	"{{.PKG}}/apps/{{.AppName}}"
     )
 
     var (
@@ -14,18 +14,18 @@
     )
 
     type handler struct {
-    	service example.ServiceServer
+    	service {{.AppName}}.ServiceServer
     	log     logger.Logger
     }
 
     func (h *handler) Config() error {
-    	h.log = zap.Instance().Named(example.AppName)
-    	h.service = toolchain-service.GetGrpcService(example.AppName).(example.ServiceServer)
+    	h.log = zap.Instance().Named({{.AppName}}.AppName)
+    	h.service = toolchain-service.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
     	return nil
     }
 
     func (h *handler) Name() string {
-    	return example.AppName
+    	return {{.AppName}}.AppName
     }
 
     func (h *handler) Version() string {
@@ -33,12 +33,12 @@
     }
 
     func (h *handler) Registry(r gin.IRouter) {
-    	r.POST("/", h.CreateExample)
-    	r.GET("/", h.QueryExample)
-    	r.GET("/:id", h.DescribeExample)
-    	r.PUT("/:id", h.PutExample)
-    	r.PATCH("/:id", h.PatchExample)
-    	r.DELETE("/:id", h.DeleteExample)
+    	r.POST("/", h.Create{{.CapName}})
+    	r.GET("/", h.Query{{.CapName}})
+    	r.GET("/:id", h.Describe{{.CapName}})
+    	r.PUT("/:id", h.Put{{.CapName}})
+    	r.PATCH("/:id", h.Patch{{.CapName}})
+    	r.DELETE("/:id", h.Delete{{.CapName}})
     }
 
     func init() {

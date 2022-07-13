@@ -17,7 +17,7 @@ import (
 	"github.com/yamakiller/glacier-toolchain/logger/zap"
 	"google.golang.org/grpc"
 
-	"{{.PKG}}/apps/example"
+	"{{.PKG}}/apps/{{.AppName}}"
 	"{{.PKG}}/conf"
 )
 
@@ -37,7 +37,7 @@ type service struct {
 	col *mongo.Collection
 {{- end }}
 	log  logger.Logger
-	example.UnimplementedServiceServer
+	{{.AppName}}.UnimplementedServiceServer
 }
 
 func (s *service) Config() error {
@@ -68,11 +68,11 @@ func (s *service) Config() error {
 }
 
 func (s *service) Name() string {
-	return example.AppName
+	return {{.AppName}}.AppName
 }
 
 func (s *service) Registry(server *grpc.Server) {
-	example.RegisterServiceServer(server, svr)
+	{{.AppName}}.RegisterServiceServer(server, svr)
 }
 
 func init() {

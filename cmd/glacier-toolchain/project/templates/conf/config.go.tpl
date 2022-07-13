@@ -51,7 +51,7 @@ func newConfig() *Config {
 		MySQL:   newDefaultMySQL(),
 {{- end }}
 {{ if $.EnablePostgreSQL -}}
-        PostgreSQL:: newDefaultPostgreSQL(),
+		PostgreSQL:: newDefaultPostgreSQL(),
 {{- end }}
 {{ if $.EnableMongoDB -}}
 		Mongo:   newDefaultMongoDB(),

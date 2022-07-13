@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"{{.PKG}}/apps/example"
+	"{{.PKG}}/apps/{{.AppName}}"
 
 {{ if $.EnableMongoDB -}}
 	"github.com/yamakiller/glacier-toolchain/exception"
@@ -15,15 +15,15 @@ import (
 )
 
 {{ if $.EnableMySQL -}}
-func (s *service) deleteExample(ctx context.Context, ins *example.Example) error {
+func (s *service) delete{{.CapName}}(ctx context.Context, ins *{{.AppName}}.{{.CapName}}) error {
 	if ins == nil || ins.Id == "" {
-		return fmt.Errorf("example is nil")
+		return fmt.Errorf("{{.AppName}} is nil")
 	}
 
 	stmt := s.db.Session(&gorm.Session{PrepareStmt: true})
     defer stmt.Close()
 
-    err = stmt.Exec(deleteExampleSQL, ins.Id).Error
+    err = stmt.Exec(delete{{.CapName}}SQL, ins.Id).Error
     if err != nil {
         return err
     }
@@ -31,11 +31,11 @@ func (s *service) deleteExample(ctx context.Context, ins *example.Example) error
 	return nil
 }
 
-func (s *service) updateExample(ctx context.Context, ins *example.Example) error {
+func (s *service) update{{.CapName}}(ctx context.Context, ins *{{.AppName}}.{{.CapName}}) error {
 	stmt := s.db.Session(&gorm.Session{PrepareStmt: true})
     defer stmt.Close()
 
-    err = stmt.Exec(updateExampleSQL,
+    err = stmt.Exec(update{{.CapName}}SQL,
     		ins.UpdateAt, ins.UpdateBy, ins.Data.Name, ins.Data.Author, ins.Id).Error
 
 	if err != nil {
@@ -47,40 +47,40 @@ func (s *service) updateExample(ctx context.Context, ins *example.Example) error
 {{- end }}
 
 {{ if $.EnableMongoDB -}}
-func (s *service) save(ctx context.Context, ins *example.Example) error {
+func (s *service) save(ctx context.Context, ins *{{.AppName}}.{{.CapName}}) error {
 	if _, err := s.col.InsertOne(ctx, ins); err != nil {
-		return exception.NewInternalServerError("inserted example(%s) document error, %s",
+		return exception.NewInternalServerError("inserted {{.AppName}}(%s) document error, %s",
 			ins.Data.Name, err)
 	}
 	return nil
 }
 
-func (s *service) get(ctx context.Context, id string) (*example.Example, error) {
+func (s *service) get(ctx context.Context, id string) (*{{.AppName}}.{{.CapName}}, error) {
 	filter := bson.M{"_id": id}
 
-	ins := example.NewDefaultExample()
+	ins := {{.AppName}}.NewDefault{{.CapName}}()
 	if err := s.col.FindOne(ctx, filter).Decode(ins); err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, exception.NewNotFound("example %s not found", id)
+			return nil, exception.NewNotFound("{{.AppName}} %s not found", id)
 		}
 
-		return nil, exception.NewInternalServerError("find example %s error, %s", id, err)
+		return nil, exception.NewInternalServerError("find {{.AppName}} %s error, %s", id, err)
 	}
 
 	return ins, nil
 }
 
-func newQueryExampleRequest(r *example.QueryExampleRequest) *queryExampleRequest {
-	return &queryExampleRequest{
+func newQuery{{.CapName}}Request(r *{{.AppName}}.Query{{.CapName}}Request) *query{{.CapName}}Request {
+	return &query{{.CapName}}Request{
 		r,
 	}
 }
 
-type queryExampleRequest struct {
-	*example.QueryExampleRequest
+type query{{.CapName}}Request struct {
+	*{{.AppName}}.Query{{.CapName}}Request
 }
 
-func (r *queryExampleRequest) FindOptions() *options.FindOptions {
+func (r *query{{.CapName}}Request) FindOptions() *options.FindOptions {
 	pageSize := int64(r.Page.PageSize)
 	skip := int64(r.Page.PageSize) * int64(r.Page.PageNumber-1)
 	opt := &options.FindOptions{
@@ -94,7 +94,7 @@ func (r *queryExampleRequest) FindOptions() *options.FindOptions {
 	return opt
 }
 
-func (r *queryExampleRequest) FindFilter() bson.M {
+func (r *query{{.CapName}}Request) FindFilter() bson.M {
 	filter := bson.M{}
 	if r.Keywords != "" {
 		filter["$or"] = bson.A{
@@ -105,18 +105,18 @@ func (r *queryExampleRequest) FindFilter() bson.M {
 	return filter
 }
 
-func (s *service) query(ctx context.Context, req *queryExampleRequest) (*example.ExampleSet, error) {
+func (s *service) query(ctx context.Context, req *query{{.CapName}}Request) (*{{.AppName}}.{{.CapName}}Set, error) {
 	resp, err := s.col.Find(ctx, req.FindFilter(), req.FindOptions())
 	if err != nil {
-		return nil, exception.NewInternalServerError("find example error, error is %s", err)
+		return nil, exception.NewInternalServerError("find {{.AppName}} error, error is %s", err)
 	}
 
-	set := example.NewExampleSet()
+	set := {{.AppName}}.New{{.CapName}}Set()
 	// 循环
 	for resp.Next(ctx) {
-		ins := example.NewDefaultExample()
+		ins := {{.AppName}}.NewDefault{{.CapName}}()
 		if err := resp.Decode(ins); err != nil {
-			return nil, exception.NewInternalServerError("decode example error, error is %s", err)
+			return nil, exception.NewInternalServerError("decode {{.AppName}} error, error is %s", err)
 		}
 
 		set.Add(ins)
@@ -125,34 +125,34 @@ func (s *service) query(ctx context.Context, req *queryExampleRequest) (*example
 	// count
 	count, err := s.col.CountDocuments(ctx, req.FindFilter())
 	if err != nil {
-		return nil, exception.NewInternalServerError("get example count error, error is %s", err)
+		return nil, exception.NewInternalServerError("get {{.AppName}} count error, error is %s", err)
 	}
 	set.Total = count
 
 	return set, nil
 }
 
-func (s *service) update(ctx context.Context, ins *example.Example) error {
+func (s *service) update(ctx context.Context, ins *{{.AppName}}.{{.CapName}}) error {
 	if _, err := s.col.UpdateByID(ctx, ins.Id, ins); err != nil {
-		return exception.NewInternalServerError("inserted example(%s) document error, %s",
+		return exception.NewInternalServerError("inserted {{.AppName}}(%s) document error, %s",
 			ins.Data.Name, err)
 	}
 
 	return nil
 }
 
-func (s *service) deleteExample(ctx context.Context, ins *example.Example) error {
+func (s *service) delete{{.CapName}}(ctx context.Context, ins *{{.AppName}}.{{.CapName}}) error {
 	if ins == nil || ins.Id == "" {
-		return fmt.Errorf("example is nil")
+		return fmt.Errorf("{{.AppName}} is nil")
 	}
 
 	result, err := s.col.DeleteOne(ctx, bson.M{"_id": ins.Id})
 	if err != nil {
-		return exception.NewInternalServerError("delete example(%s) error, %s", ins.Id, err)
+		return exception.NewInternalServerError("delete {{.AppName}}(%s) error, %s", ins.Id, err)
 	}
 
 	if result.DeletedCount == 0 {
-		return exception.NewNotFound("example %s not found", ins.Id)
+		return exception.NewNotFound("{{.AppName}} %s not found", ins.Id)
 	}
 
 	return nil

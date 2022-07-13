@@ -1,23 +1,21 @@
 syntax = "proto3";
 
-package {{.AppName}};
-option go_package = "{{.PKG}}/apps/{{.AppName}}";
+package demo.example;
+option go_package = "github.com/yamakiller/glacier-toolchain/apps/example";
 
 import "github.com/yamakiller/glacier-toolchain/pb/page/page.proto";
 import "github.com/yamakiller/glacier-toolchain/pb/request/request.proto";
 
-/*
-示例代码
 service Service {
-    rpc Create{{.CapName}}(Create{{.CapName}}Request) returns({{.CapName}});
-    rpc Query{{.CapName}}(Query{{.CapName}}Request) returns({{.CapName}}Set);
-    rpc Describe{{.CapName}}(Describe{{.CapName}}Request) returns({{.CapName}});
-    rpc Update{{.CapName}}(Update{{.CapName}}Request) returns({{.CapName}});
-    rpc Delete{{.CapName}}(Delete{{.CapName}}Request) returns({{.CapName}});
+    rpc CreateExample(CreateExampleRequest) returns(Example);
+    rpc QueryExample(QueryExampleRequest) returns(ExampleSet);
+    rpc DescribeExample(DescribeExampleRequest) returns(Example);
+    rpc UpdateExample(UpdateExampleRequest) returns(Example);
+    rpc DeleteExample(DeleteExampleRequest) returns(Example);
 }
 
-// {{.CapName}} 示例数据
-message {{.CapName}} {
+// Example 示例数据
+message Example {
     // 唯一ID
     // @gotags: json:"id" bson:"_id"
     string id = 1;
@@ -32,10 +30,10 @@ message {{.CapName}} {
     string update_by = 4;
     // 信息
     // @gotags: json:"data" bson:"data"
-    Create{{.CapName}}Request data = 5;
+    CreateExampleRequest data = 5;
 }
 
-message Create{{.CapName}}Request {
+message CreateExampleRequest {
     // 创建人
     // @gotags: json:"create_by" bson:"create_by"
     string create_by = 1;
@@ -47,7 +45,7 @@ message Create{{.CapName}}Request {
     string author = 3;
 }
 
-message Query{{.CapName}}Request {
+message QueryExampleRequest {
     // 分页参数
     // @gotags: json:"page"
     infraboard.mcube.page.PageRequest page = 1;
@@ -56,24 +54,24 @@ message Query{{.CapName}}Request {
     string keywords = 2;
 }
 
-// {{.CapName}}Set 数据集
-message {{.CapName}}Set {
+// ExampleSet 数据集
+message ExampleSet {
     // 分页时，返回总数量
     // @gotags: json:"total"
     int64 total = 1;
     // 一页的数据
     // @gotags: json:"items"
-    repeated {{.CapName}} items = 2;
+    repeated Example items = 2;
 }
 
-message Describe{{.CapName}}Request {
-    // {{.AppName}} id
+message DescribeExampleRequest {
+    // example id
     // @gotags: json:"id"
     string id = 1;
 }
 
-message Update{{.CapName}}Request {
-    // {{.AppName}} id
+message UpdateExampleRequest {
+    // example id
     // @gotags: json:"id"
     string id = 1;
     // 更新模式
@@ -87,11 +85,11 @@ message Update{{.CapName}}Request {
     int64 update_at = 4;
     // 更新的书本信息
     // @gotags: json:"data"
-    Create{{.CapName}}Request data = 5;
+    CreateExampleRequest data = 5;
 }
 
-message Delete{{.CapName}}Request {
-    // {{.AppName}} id
+message DeleteExampleRequest {
+    // example id
     // @gotags: json:"id"
     string id = 1;
-}*/
+}
