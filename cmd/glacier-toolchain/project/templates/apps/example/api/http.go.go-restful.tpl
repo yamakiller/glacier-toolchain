@@ -35,7 +35,7 @@ func (h *handler) Version() string {
 }
 
 func (h *handler) Registry(ws *restful.WebService) {
-	tags := []string{"examples"}
+	tags := []string{"{{.AppName}}s"}
 
 	ws.Route(ws.POST("").To(h.CreateExample).
 		Doc("create a example").
