@@ -1,101 +1,84 @@
 # glacier-toolchain
 
-dfdf
+微服务工具箱, 构建微服务中使用的工具集  
+- http框架: 用于构建领域服务的路由框架, 基于httprouter进行封装
+- 异常处理: 定义API Exception
+- 日志处理: 封装zap, 用于日志处理
+- 加密解密: 封装cbc和ecies
+- 自定义类型: ftime方便控制时间序列化的类型, set集合
+- 服务注册: 服务注册组件
+- 缓存处理: 用于构建多级对象缓存
+- 事件总线: 用于系统事件订阅与发布
+- 链路追踪: 工具链提供的组件都内置了链路追踪
+快速上手
+首先你需要安装工具链, 所有的功能都集成到这个CLI工具上了
+````
+ go install github.com/yamakiller/glacier-toolchain/cmd/glacier-toolchain
+````
+按照完成后, 通过help指令查看基本使用方法
 
-## 架构图
+````
+$ glacier-toolchain -h
+glacier-toolchain ...
 
-## 项目说明
+Usage:
+glacier-toolchain [flags]
+glacier-toolchain [command]
 
-```
-├── protocol                       # 脚手架功能: rpc / http 功能加载
-│   ├── grpc.go
-│   └── http.go
-├── client                         # 脚手架功能: grpc 客户端实现
-│   ├── client.go
-│   └── config.go
-├── cmd                            # 脚手架功能: 处理程序启停参数，加载系统配置文件
-│   ├── root.go
-│   └── start.go
-├── conf                           # 脚手架功能: 配置文件加载
-│   ├── config.go                  # 配置文件定义
-│   ├── load.go                    # 不同的配置加载方式
-│   └── log.go                     # 日志配置文件
-├── dist                           # 脚手架功能: 构建产物
-├── etc                            # 配置文件
-│   ├── xxx.env
-│   └── xxx.toml
-├── apps                            # 具体业务场景的领域包
-│   ├── all
-│   │   |-- grpc.go                # 注册所有GRPC服务模块, 暴露给框架GRPC服务器加载, 注意 导入有先后顺序。
-│   │   |-- http.go                # 注册所有HTTP服务模块, 暴露给框架HTTP服务器加载。
-│   │   └── internal.go            #  注册所有内部服务模块, 无须对外暴露的服务, 用于内部依赖。
-│   ├── example                    # 具体业务场景领域服务 example
-│   │   ├── http                   # http
-│   │   │    ├── example.go        # example 服务的http方法实现，请求参数处理、权限处理、数据响应等
-│   │   │    └── http.go           # 领域模块内的 http 路由处理，向系统层注册http服务
-│   │   ├── impl                   # rpc
-│   │   │    ├── example.go        # example 服务的rpc方法实现，请求参数处理、权限处理、数据响应等
-│   │   │    └── impl.go           # 领域模块内的 rpc 服务注册 ，向系统层注册rpc服务
-│   │   ├──  pb                    # protobuf 定义
-│   │   │     └── example.proto    # example proto 定义文件
-│   │   ├── app.go                 # example app 只定义扩展
-│   │   ├── example.pb.go          # protobuf 生成的文件
-│   │   └── example_grpc.pb.go     # pb/example.proto 生成方法定义
-├── version                        # 程序版本信息
-│   └── version.go
-├── README.md
-├── main.go                        # Go程序唯一入口
-├── Makefile                       # make 命令定义
-└── go.mod                         # go mod 依赖定义
-```
+Available Commands:
+enum        枚举生成器
+help        Help about any command
+init        初始化
 
+Flags:
+-h, --help      help for glacier-toolchain
+-v, --version   the glacier-toolchain version
 
-## 快速开发
-make脚手架
-```sh
-➜  glacier-toolchain git:(master) ✗ make help
-dep                            Get the dependencies
-lint                           Lint Golang files
-vet                            Run go vet
-test                           Run unittests
-test-coverage                  Run tests with coverage
-build                          Local build
-linux                          Linux build
-run                            Run Server
-clean                          Remove previous build
-help                           Display this help screen
-```
+Use "glacier-toolchain [command] --help" for more information about a command.
+````
 
-1. 使用安装依赖的Protobuf库(文件)
-```sh
-# 把依赖的probuf文件复制到/usr/local/include
+启用看一看  
 
-# 创建protobuf文件目录
-$ make -pv /usr/local/include/github.com/yamakiller/glacier-toolchain/pb
-
-# glacier-toolchain protobuf文件
-$ ls `go env GOPATH`/pkg/mod/github.com/yamakiller/
-
-# 复制到/usr/local/include
-$ cp -rf pb  /usr/local/include/github.com/yamakiller/glacier-toolchain/pb
-```
-
-2. 添加配置文件(默认读取位置: etc/glacier-toolchain.toml)
-```sh
-$ 编辑样例配置文件 etc/glacier-toolchain.toml.example
-$ mv etc/glacier-toolchain.toml.example etc/glacier-toolchain.toml
-```
-
-3. 启动服务
-```sh
-# 编译protobuf文件, 生成代码
-$ make gen
-# 如果是MySQL, 执行SQL语句(docs/schema/tables.sql)
-$ make init
-# 下载项目的依赖
-$ make dep
-# 运行程序
+````
 $ make run
-```
+2020-06-06T20:03:00.328+0800    INFO    [INIT]  cmd/service.go:151      log level: debug
+2020-06-06T20:03:00.328+0800    INFO    [CLI]   cmd/service.go:93       loaded services: []
+Version   :
+Build Time:
+Git Branch:
+Git Commit:
+Go Version:
 
-## 相关文档
+2020-06-06T20:03:00.328+0800    INFO    [API]   api/api.go:66   http endpoint registry success
+2020-06-06T20:03:00.328+0800    INFO    [API]   api/api.go:100  HTTP服务启动成功, 监听地址: 0.0.0.0:8050
+````
+
+提升效率自动化的生成  
+创建项目
+````
+glacier-toolchain project init
+````
+构建协议
+````
+glacier-toolchain proto generate --bin=<proto可执行文件> --include=<proto 基础库文件> --pkg=<项目包名> <需要搜索的路径>
+例如:
+glacier-toolchain proto generate --bin=./bin/protoc.exe --include=./bin/protobuf/include --pkg=github.com/yamakiller/glacier-center  apps/*/pb/*.proto
+````
+构建协议标签
+````
+glacier-toolchain proto generate-tag <需要搜索的路径>
+例如:
+glacier-toolchain proto generate-tag apps/*/*.pb.go
+````
+构建enum
+````
+glacier-toolchain generate enum <-m:是否生成编解码> <-p:是否构建协议扩展> <构建文件路径>
+例如:
+glacier-toolchain generate enum -p -m apps/*/*.pb.go
+````
+构建Proto http
+````
+protoc --proto_path=. --proto_path=<GOPATH/src> --go-http_out=<生成文件输出路径> --go-http_opt=module="<项目包名>" <需要生成的协议文件>
+例如:
+protoc.exe --proto_path=. --proto_path= D:\workspace\go\src --go-http_out=. --go-http_opt=module="github.com/yamakiller/glacier-auth" apps/application/pb/service.proto
+````
