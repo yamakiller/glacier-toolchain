@@ -72,7 +72,7 @@ func init() {
 		false,
 		"is generate json MarshalJSON and UnmarshalJSON method")
 	enumCmd.PersistentFlags().BoolVarP(&enum.G.ProtobufExt,
-		"protobuf.ext",
+		"protobuf_ext",
 		"p",
 		false,
 		"is generate protobuf extension method")
