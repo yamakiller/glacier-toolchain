@@ -13,7 +13,8 @@ var addCmd = &cobra.Command{
 	Short: "初始化",
 	Long:  `初始化一个glacier-toolchain项目`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		p, err := project.LoadConfigFromCLI()
+
+		p, err := project.LoadConfigFromYAMLCLI()
 		if err != nil {
 			if err == terminal.InterruptErr {
 				fmt.Println("项目初始化取消")
@@ -22,7 +23,7 @@ var addCmd = &cobra.Command{
 			return err
 		}
 
-		err = p.Init()
+		err = p.Add()
 		if err != nil {
 			return err
 		}

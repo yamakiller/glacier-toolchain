@@ -126,7 +126,31 @@ func LoadConfigFromCLI() (*Project, error) {
 	return p, nil
 }
 
-func LoadProjectFromYAML(path string) (*Project, error) {
+func LoadConfigFromYAMLCLI() (*Project, error) {
+
+	var PKG string
+	err := survey.AskOne(
+		&survey.Input{
+			Message: "请输入项目包名称:",
+			Default: "gitee.com/go-course/glacier-toolchain-demo",
+		},
+		&PKG,
+		survey.WithValidator(survey.Required),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	projectPath := path.Join(os.Getenv("GOPATH"), "src", PKG, ProjectSettingFilePath)
+	if !isFileExists(projectPath) {
+		return nil, fmt.Errorf("%s project file not exits", projectPath)
+	}
+
+	return loadProjectFromYAML(projectPath)
+}
+
+func loadProjectFromYAML(path string) (*Project, error) {
 	fp, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -147,8 +171,40 @@ func LoadProjectFromYAML(path string) (*Project, error) {
 	return p, nil
 }
 
+func isFileExists(path string) bool {
+	_, err := os.Stat(path) //os.Stat获取文件信息
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		return false
+	}
+	return true
+}
+
 type Project struct {
 	PKG               string       `yaml:"pkg"`
+	Name              string       `yaml:"name"`
+	Description       string       `yaml:"description"`
+	EnableGlacierAuth bool         `yaml:"enable_glacier_auth"`
+	GlacierAuth       *GlacierAuth `yaml:"-"`
+	EnableMySQL       bool         `yaml:"enable_mysql"`
+	MySQL             *MySQL       `yaml:"-"`
+	EnablePostgreSQL  bool         `yaml:"enable_postgre_sql"`
+	PostgreSQL        *PostgreSQL  `yaml:"_"`
+	EnableMongoDB     bool         `yaml:"enable_mongodb"`
+	MongoDB           *MongoDB     `yaml:"-"`
+	GenExample        bool         `yaml:"gen_example"`
+	HttpFramework     string       `yaml:"http_framework"`
+	EnableCache       bool         `yaml:"enable_cache"`
+
+	render     *template.Template
+	createdDir map[string]bool
+}
+
+type ProjectAdd struct {
+	PKG               string       `yaml:"pkg"`
+	AppName           string       `yaml:"-"`
 	Name              string       `yaml:"name"`
 	Description       string       `yaml:"description"`
 	EnableGlacierAuth bool         `yaml:"enable_glacier_auth"`
@@ -226,8 +282,8 @@ func (p *Project) Init() error {
 			return nil
 		}
 
-		// 如果不是使用MySQL, 不需要渲染的文件
-		if strings.Contains(path, "apps/example/impl/sql") && !p.EnableMySQL {
+		// 如果不是使用MySQL,PostgreSQL, 不需要渲染的文件
+		if strings.Contains(path, "apps/example/impl/sql") && !(p.EnableMySQL || p.EnablePostgreSQL) {
 			return nil
 		}
 
@@ -269,6 +325,24 @@ func (p *Project) Init() error {
 
 	fmt.Println("项目初始化完成, 项目结构如下: ")
 	if err := p.show(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *Project) Add() error {
+	var AppName string
+	err := survey.AskOne(
+		&survey.Input{
+			Message: "请输入应用名:",
+			Default: "example",
+		},
+		&AppName,
+		survey.WithValidator(survey.Required),
+	)
+
+	if err != nil {
 		return err
 	}
 
