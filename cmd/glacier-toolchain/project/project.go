@@ -402,6 +402,7 @@ func (p *Project) Add() error {
 			sourceFileName = strings.TrimSuffix(sourceFileName, "."+p.HttpFramework)
 		}
 
+		sourceFileName = strings.Replace(sourceFileName, "example", AppName, -1)
 		return p.rendAdd(dirName, sourceFileName, AppName, string(data))
 	}
 
@@ -413,7 +414,6 @@ func (p *Project) Add() error {
 	allPath := path.Join(appsPath, "all")
 	p.registryAdd(path.Join(allPath, "api.go"), AppName, "api")
 	p.registryAdd(path.Join(allPath, "impl.go"), AppName, "impl")
-	// p.registryAdd(path.Join(allPath, "internal.go"), AppName, "internal")
 	return nil
 }
 

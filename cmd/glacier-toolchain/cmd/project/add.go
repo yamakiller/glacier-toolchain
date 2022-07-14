@@ -10,8 +10,8 @@ import (
 // addCmd 初始化系统
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "初始化",
-	Long:  `初始化一个glacier-toolchain项目`,
+	Short: "增加应用",
+	Long:  `增加一个glacier-toolchain项目的应用`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		p, err := project.LoadConfigFromYAMLCLI()
