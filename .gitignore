@@ -18,4 +18,3 @@ etc/glacier-toolchain.toml
 etc/glacier-toolchain.env
 etc/unit_test.env
 etc/ssl
-glacier-toolchain
