@@ -7,24 +7,20 @@ import (
 	"time"
 
 {{ if $.EnableMySQL -}}
-    "gorm.io/driver/mysql"
-    "gorm.io/gorm"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 {{- end }}
-
 {{ if $.EnablePostgreSQL -}}
-    "gorm.io/driver/postgres"
-    "gorm.io/gorm"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 {{- end }}
-
 {{ if $.EnableGlacierAuth -}}
-	kc "github.com/yamakiller/glacier-auth/client"
+	gac "github.com/yamakiller/glacier-auth/client"
 {{- end }}
-
 {{ if $.EnableCache -}}
 	"github.com/yamakiller/glacier-toolchain/cache/memory"
 	"github.com/yamakiller/glacier-toolchain/cache/redis"
 {{- end }}
-
 {{ if $.EnableMongoDB -}}
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -169,19 +165,19 @@ func (a *glacierAuth) Addr() string {
 	return a.Host + ":" + a.Port
 }
 
-func (a *glacierAuth) Client() (*kc.Client, error) {
-	if kc.C() == nil {
-		conf := kc.NewDefaultConfig()
+func (a *glacierAuth) Client() (*gac.Client, error) {
+	if gac.C() == nil {
+		conf := gac.NewDefaultConfig()
 		conf.SetAddress(a.Addr())
 		conf.SetClientCredentials(a.ClientID, a.ClientSecret)
-		client, err := kc.NewClient(conf)
+		client, err := gac.NewClient(conf)
 		if err != nil {
 			return nil, err
 		}
-		kc.SetGlobal(client)
+		gac.SetGlobal(client)
 	}
 
-	return kc.C(), nil
+	return gac.C(), nil
 }
 
 func newDefaultGlacierAuth() *glacierAuth {

@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修正目录">
-      <change afterPath="$PROJECT_DIR$/http/label/action.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/http/label/meta.go" afterDir="false" />
+    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修改模板缩进">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/project.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/client/client.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/client/client.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/client/config.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/client/config.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/conf/config.go.tpl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +54,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -90,7 +92,8 @@
     <MESSAGE value="修改工具链创建新应用重命名问题" />
     <MESSAGE value=".." />
     <MESSAGE value="修正目录" />
-    <option name="LAST_COMMIT_MESSAGE" value="修正目录" />
+    <MESSAGE value="修改模板缩进" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改模板缩进" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

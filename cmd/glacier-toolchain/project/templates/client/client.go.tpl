@@ -1,7 +1,7 @@
 package client
 
 import (
-	kc "github.com/yamakiller/glacier-auth/client"
+	gac "github.com/yamakiller/glacier-auth/client"
 	"github.com/yamakiller/glacier-toolchain/logger"
 	"github.com/yamakiller/glacier-toolchain/logger/zap"
 	"google.golang.org/grpc"
@@ -25,7 +25,7 @@ func Instance() *ClientSet {
 }
 
 // NewClient 根据配置信息实例化一个客户端
-func NewClient(conf *kc.Config) (*ClientSet, error) {
+func NewClient(conf *gac.Config) (*ClientSet, error) {
 	zap.DevelopmentSetup()
 	log := zap.Instance()
 	conn, err := grpc.Dial(

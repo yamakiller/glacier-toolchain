@@ -188,6 +188,8 @@ func isFileExists(path string) bool {
 type Project struct {
 	PKG               string       `yaml:"pkg"`
 	Name              string       `yaml:"name"`
+	AppName           string       `yaml:"-"`
+	CapName           string       `yaml:"-"`
 	Description       string       `yaml:"description"`
 	EnableGlacierAuth bool         `yaml:"enable_glacier_auth"`
 	GlacierAuth       *GlacierAuth `yaml:"-"`
@@ -255,14 +257,17 @@ func (p *Project) Init() error {
 
 		// 处理是否生成样例代码
 		if p.GenExample {
+			p.AppName = "example"
+			p.CapName = "Example"
 			if strings.Contains(path, "apps/example") {
 				// 只生成对应框架的样例代码
 				if strings.Contains(path, "apps/example/api") && p.HttpFramework != "" {
-					if !strings.HasSuffix(path, fmt.Sprintf("example.go.%s.tpl", p.HttpFramework)) {
+					if !strings.HasSuffix(path, fmt.Sprintf(".go.%s.tpl", p.HttpFramework)) {
 						return nil
 					}
-				}
-				if strings.Contains(path, "apps/example/impl") || strings.Contains(path, "apps/example/pb") || strings.Contains(path, "apps/example") {
+				} else if strings.Contains(path, "apps/example/impl") ||
+					strings.Contains(path, "apps/example/pb") ||
+					strings.Contains(path, "apps/example") {
 					if !strings.HasSuffix(path, ".example.tpl") {
 						return nil
 					}
@@ -274,7 +279,15 @@ func (p *Project) Init() error {
 				}
 			}
 		} else {
-			return nil
+			if strings.Contains(path, "apps/example") {
+				return nil
+			}
+		}
+
+		if !p.EnableGlacierAuth {
+			if strings.Contains(path, "client") {
+				return nil
+			}
 		}
 
 		// 如果不是使用MySQL,PostgreSQL, 不需要渲染的文件
@@ -286,7 +299,7 @@ func (p *Project) Init() error {
 		if !strings.HasSuffix(d.Name(), ".tpl") {
 			return nil
 		}
-
+		fmt.Println("a|" + path)
 		// 读取模板内容
 		data, err := templates.ReadFile(path)
 		if err != nil {
@@ -306,6 +319,7 @@ func (p *Project) Init() error {
 		// 去除example后缀
 		sourceFileName = strings.TrimSuffix(sourceFileName, ".example")
 
+		fmt.Fprintf(os.Stderr, "%s|%s\n", dirName, sourceFileName)
 		return p.rendTemplate(dirName, sourceFileName, string(data))
 	}
 
