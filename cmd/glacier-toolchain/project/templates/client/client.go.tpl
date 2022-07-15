@@ -49,7 +49,7 @@ type ClientSet struct {
 	log  logger.Logger
 }
 
-// Book服务的SDK
+// Example服务的SDK
 func (c *ClientSet) Example() example.ServiceClient {
 	return example.NewServiceClient(c.conn)
 }
