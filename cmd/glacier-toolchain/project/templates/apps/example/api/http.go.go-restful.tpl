@@ -3,7 +3,7 @@ package api
 import (
 	restfulspec "github.com/emicklei/go-restful-openapi"
 	"github.com/emicklei/go-restful/v3"
-	toolchain-service "github.com/yamakiller/glacier-toolchain/service"
+	tcs "github.com/yamakiller/glacier-toolchain/service"
 	"github.com/yamakiller/glacier-toolchain/http/response"
 	"github.com/yamakiller/glacier-toolchain/logger"
 	"github.com/yamakiller/glacier-toolchain/logger/zap"
@@ -22,7 +22,7 @@ type handler struct {
 
 func (h *handler) Config() error {
 	h.log = zap.Instance().Named({{.AppName}}.AppName)
-	h.service = toolchain-service.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
+	h.service = tcs.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
 	return nil
 }
 
@@ -79,5 +79,5 @@ func (h *handler) Registry(ws *restful.WebService) {
 }
 
 func init() {
-	toolchain-service.RegistryRESTfulService(h)
+	tcs.RegistryRESTfulService(h)
 }

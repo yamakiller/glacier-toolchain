@@ -7,7 +7,7 @@ import (
 	"github.com/yamakiller/glacier-toolchain/logger/zap"
 
 	"{{.PKG}}/apps/{{.AppName}}"
-	toolchain-service "github.com/yamakiller/glacier-toolchain/service"
+	tcs "github.com/yamakiller/glacier-toolchain/service"
 )
 
 var (
@@ -21,7 +21,7 @@ type handler struct {
 
 func (h *handler) Config() error {
 	h.log = zap.Instance().Named({{.AppName}}.AppName)
-	h.service = toolchain-service.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
+	h.service = tcs.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
 	return nil
 }
 
@@ -44,5 +44,5 @@ func (h *handler) Registry(r router.SubRouter) {
 }
 
 func init() {
-	toolchain-service.RegistryHttpService(h)
+	tcs.RegistryHttpService(h)
 }

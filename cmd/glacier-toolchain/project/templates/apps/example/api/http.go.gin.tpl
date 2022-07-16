@@ -4,7 +4,7 @@
     	"github.com/gin-gonic/gin"
     	"github.com/yamakiller/glacier-toolchain/logger"
     	"github.com/yamakiller/glacier-toolchain/logger/zap"
-    	toolchain-service "github.com/yamakiller/glacier-toolchain/service"
+    	tcs "github.com/yamakiller/glacier-toolchain/service"
 
     	"{{.PKG}}/apps/{{.AppName}}"
     )
@@ -20,7 +20,7 @@
 
     func (h *handler) Config() error {
     	h.log = zap.Instance().Named({{.AppName}}.AppName)
-    	h.service = toolchain-service.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
+    	h.service = tcs.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
     	return nil
     }
 
@@ -44,5 +44,5 @@
     }
 
     func init() {
-    	toolchain-service.RegistryGinService(h)
+    	tcs.RegistryGinService(h)
     }
