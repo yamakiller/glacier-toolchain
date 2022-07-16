@@ -16,13 +16,13 @@ var (
 )
 
 type handler struct {
-	service {{.AppName}}.ServiceServer
+	service {{.AppName}}.Service
 	log     logger.Logger
 }
 
 func (h *handler) Config() error {
 	h.log = zap.Instance().Named({{.AppName}}.AppName)
-	h.service = tcs.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.ServiceServer)
+	h.service = tcs.GetGrpcService({{.AppName}}.AppName).({{.AppName}}.Service)
 	return nil
 }
 
