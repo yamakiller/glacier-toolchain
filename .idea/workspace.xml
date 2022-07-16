@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修改示例代码Api写入失败错误">
+    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修正HTTP模板引用错误">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.gin.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.gin.tpl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.httprouter.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.httprouter.tpl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/protocol/grpc.go.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/protocol/grpc.go.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/protocol/http.go.gin.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/protocol/http.go.gin.tpl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +92,8 @@
     <MESSAGE value="修正目录" />
     <MESSAGE value="修改模板缩进" />
     <MESSAGE value="修改示例代码Api写入失败错误" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改示例代码Api写入失败错误" />
+    <MESSAGE value="修正HTTP模板引用错误" />
+    <option name="LAST_COMMIT_MESSAGE" value="修正HTTP模板引用错误" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

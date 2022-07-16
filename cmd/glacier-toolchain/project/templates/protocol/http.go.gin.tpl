@@ -24,7 +24,7 @@ import (
 // NewHTTPService 构建函数
 func NewHTTPService() *HTTPService {
 {{ if $.EnableGlacierAuth -}}
-	c, err := conf.C().GlacierAuth.Client()
+	c, err := conf.Instance().GlacierAuth.Client()
 	if err != nil {
 		panic(err)
 	}

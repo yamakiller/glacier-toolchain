@@ -4,7 +4,6 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
-
 {{ if $.EnableGlacierAuth -}}
 	"github.com/yamakiller/glacier-auth/client/interceptor"
 {{- end }}
@@ -37,7 +36,7 @@ func NewGRPCService() *GRPCService {
 	return &GRPCService{
 		svr: grpcServer,
 		l:   log,
-		c:   conf.C(),
+		c:   conf.Instance(),
 	}
 }
 
