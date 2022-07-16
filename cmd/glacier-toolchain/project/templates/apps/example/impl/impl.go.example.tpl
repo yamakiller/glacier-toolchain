@@ -12,7 +12,7 @@ import (
 {{- end }}
 
 
-	toolchain-service "github.com/yamakiller/glacier-toolchain/service"
+	tcs "github.com/yamakiller/glacier-toolchain/service"
 	"github.com/yamakiller/glacier-toolchain/logger"
 	"github.com/yamakiller/glacier-toolchain/logger/zap"
 	"google.golang.org/grpc"
@@ -76,5 +76,5 @@ func (s *service) Registry(server *grpc.Server) {
 }
 
 func init() {
-	toolchain-service.RegistryGrpcService(svr)
+	tcs.RegistryGrpcService(svr)
 }
