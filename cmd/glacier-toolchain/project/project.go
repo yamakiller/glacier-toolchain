@@ -577,7 +577,7 @@ func (p *Project) registryAdd(filepath, AppName, mod string) error {
 	if err != nil {
 		return err
 	}
-	str := string(data)[:strings.LastIndex(string(data), ")")-1] + `_ "` + p.Name + "/apps/" + AppName + `/` + mod + `"` + "\n)"
+	str := string(data)[:strings.LastIndex(string(data), ")")-1] + `\r\n_ "` + p.Name + "/apps/" + AppName + `/` + mod + `"` + "\n)"
 	fn, err := os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		return err
