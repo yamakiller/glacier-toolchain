@@ -9,7 +9,7 @@ import (
 	"syscall"
 
 	"github.com/spf13/cobra"
-	"github.com/yamakiller/glacier-toolchain/service"
+	tcs "github.com/yamakiller/glacier-toolchain/service"
 {{ if $.EnableCache -}}
 	"github.com/yamakiller/glacier-toolchain/cache"
 	"github.com/yamakiller/glacier-toolchain/cache/memory"
@@ -49,7 +49,7 @@ var serviceCmd = &cobra.Command{
 {{- end }}
 
 		// 初始化全局app
-		if err := service.InitAllService(); err != nil {
+		if err := tcs.InitAllService(); err != nil {
 			return err
 		}
 
@@ -98,17 +98,17 @@ type service struct {
 }
 
 func (s *service) start() error {
-	s.log.Infof("loaded grpc service: %s", service.LoadedGrpcService())
+	s.log.Infof("loaded grpc service: %s", tcs.LoadedGrpcService())
 {{ if eq $.HttpFramework "go-restful" -}}
-	s.log.Infof("loaded http service: %s", service.LoadedRESTfulService())
+	s.log.Infof("loaded http service: %s", tcs.LoadedRESTfulService())
 {{- end }}
 {{ if eq $.HttpFramework "gin" -}}
-	s.log.Infof("loaded http service: %s", service.LoadedGinService())
+	s.log.Infof("loaded http service: %s", tcs.LoadedGinService())
 {{- end }}
 {{ if eq $.HttpFramework "httprouter" -}}
-	s.log.Infof("loaded http service: %s", service.LoadedHttpService())
+	s.log.Infof("loaded http service: %s", tcs.LoadedHttpService())
 {{- end }}
-	s.log.Infof("loaded internal service: %s", service.LoadedInternalService())
+	s.log.Infof("loaded internal service: %s", tcs.LoadedInternalService())
 
 	go s.grpc.Start()
 	return s.http.Start()
@@ -167,7 +167,7 @@ func loadGlobalLogger() error {
 	if err := zap.Configure(zapConfig); err != nil {
 		return err
 	}
-	zap.Instance.Named("INIT").Info(logInitMsg)
+	zap.Instance().Named("INIT").Info(logInitMsg)
 	return nil
 }
 
