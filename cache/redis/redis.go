@@ -10,6 +10,21 @@ import (
 	"time"
 )
 
+// NewCache new an redis cache instance
+func NewCache(conf *Config) *Cache {
+	client := redis.NewClient(&redis.Options{
+		Addr:     conf.Address,
+		Password: conf.Password,
+		DB:       conf.DB,
+	})
+
+	return &Cache{
+		_prefix: conf.Prefix,
+		_ttl:    time.Duration(conf.DefaultTTL) * time.Second,
+		_client: client,
+	}
+}
+
 // Cache 缓存
 type Cache struct {
 	_prefix string
