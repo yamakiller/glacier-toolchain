@@ -86,7 +86,7 @@ func (m *Generater) generateHTTPEntry() {
 }
 
 func (m *Generater) genLable(data map[string]string) string {
-	kv := []string{}
+	var kv []string
 	for k, v := range data {
 		kv = append(kv, fmt.Sprintf(`"%s": "%s"`, k, v))
 	}

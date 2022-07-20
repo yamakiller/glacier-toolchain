@@ -23,7 +23,7 @@ func NewCreateExampleRequest() *CreateExampleRequest {
 	return &CreateExampleRequest{}
 }
 
-func NewBook(req *CreateExampleRequest) (*Book, error) {
+func NewExample(req *CreateExampleRequest) (*Example, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (req *CreateExampleRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func NewExampleSet() *BookSet {
+func NewExampleSet() *ExampleSet {
 	return &ExampleSet{
 		Items: []*Example{},
 	}
