@@ -96,13 +96,13 @@ func LoadConfigFromCLI() (*Project, error) {
 	}
 
 	// 选择是否开启缓存
-	enableCache := &survey.Confirm{
-		Message: "是否开始缓存",
-	}
-	err = survey.AskOne(enableCache, &p.EnableCache)
-	if err != nil {
-		return nil, err
-	}
+	// enableCache := &survey.Confirm{
+	// 	Message: "是否开始缓存",
+	// }
+	// err = survey.AskOne(enableCache, &p.EnableCache)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// 选择是否生成样例
 	genExample := &survey.Confirm{
@@ -202,6 +202,11 @@ type Project struct {
 	GenExample        bool         `yaml:"gen_example"`
 	HttpFramework     string       `yaml:"http_framework"`
 	EnableCache       bool         `yaml:"enable_cache"`
+	CacheType         string       `yaml:"cache_type"`
+	EnableMemory      bool         `yaml:"enable_memory"`
+	Memory            *Memory      `yaml:"-"`
+	EnableRedis       bool         `yaml:"enable_redis"`
+	Redis             *Redis       `yaml:"-"`
 
 	render     *template.Template
 	createdDir map[string]bool
@@ -240,11 +245,23 @@ type PostgreSQL struct {
 }
 
 type MongoDB struct {
-	Endpoints []string
-	UserName  string
-	Password  string
-	Database  string
-	AuthDB    string
+	Endpoints []string `yaml:"endpoints"`
+	UserName  string   `yaml:"username"`
+	Password  string   `yaml:"password"`
+	Database  string   `yaml:"database"`
+	AuthDB    string   `yaml:""`
+}
+
+type Memory struct {
+	TTL  int
+	Size int
+}
+type Redis struct {
+	Prefix     string
+	Address    string
+	DB         int
+	Password   string
+	DefaultTTL int
 }
 
 // Init 初始化项目
