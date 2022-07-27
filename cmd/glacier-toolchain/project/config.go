@@ -49,6 +49,28 @@ func (p *Project) LoadGlacierAuthConfig() error {
 		return err
 	}
 
+	choicedCache := ""
+	choiceCache := &survey.Select{
+		Message: "选择缓存类型:",
+		Options: []string{"Memory", "Redis"},
+		Default: "Memory",
+	}
+	err = survey.AskOne(choiceCache, &choicedCache)
+	if err != nil {
+		return err
+	}
+	p.EnableCache = true
+	switch choicedCache {
+	case "Memory":
+		p.CacheType = "memory"
+		p.EnableMemory = true
+		p.LoadMemoryConfig()
+	case "Redis":
+		p.CacheType = "redis"
+		p.EnableRedis = true
+		p.LoadRedisConfig()
+	}
+
 	return nil
 }
 
@@ -236,5 +258,107 @@ func (p *Project) LoadMongoDBConfig() error {
 		return err
 	}
 
+	return nil
+}
+
+func (p *Project) LoadMemoryConfig() error {
+	p.Memory = &Memory{}
+	ttl := int(0)
+	err := survey.AskOne(
+		&survey.Input{
+			Message: "过期时间(秒):",
+			Default: "300",
+		},
+		&ttl,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Memory.TTL = ttl
+	size := int(0)
+	err = survey.AskOne(
+		&survey.Input{
+			Message: "缓存最大数量(个):",
+			Default: "500",
+		},
+		&size,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Memory.Size = size
+	return nil
+}
+
+func (p *Project) LoadRedisConfig() error {
+	p.Redis = &Redis{}
+	addr := ""
+	err := survey.AskOne(
+		&survey.Input{
+			Message: "Redis地址:",
+			Default: "127.0.0.1:6379",
+		},
+		&addr,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Redis.Address = addr
+	pass := ""
+	err = survey.AskOne(
+		&survey.Password{
+			Message: "Redis密码:",
+		},
+		&pass,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Redis.Password = pass
+	prefix := ""
+	err = survey.AskOne(
+		&survey.Input{
+			Message: "Redis前缀:",
+			Default: "",
+		},
+		&prefix,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Redis.Prefix = prefix
+
+	DB := int(0)
+	err = survey.AskOne(
+		&survey.Input{
+			Message: "Redis数据库:",
+			Default: "0",
+		},
+		&DB,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Redis.DB = DB
+
+	ttl := int(0)
+	err = survey.AskOne(
+		&survey.Input{
+			Message: "超时TTL(秒):",
+			Default: "300",
+		},
+		&ttl,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		return err
+	}
+	p.Redis.DefaultTTL = ttl
 	return nil
 }

@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修改config单例接口函数">
+    <list default="true" id="6bfffcc8-3fd8-4a8f-8cab-c290374d73c1" name="变更" comment="修改缓存库New">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/rest/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/rest/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/api/http.go.go-restful.tpl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/pb/example.proto.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/apps/example/pb/example.proto.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/etc/config.env.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/etc/config.env.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/etc/config.toml.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/glacier-toolchain/project/templates/etc/config.toml.tpl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +52,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../glacier-center" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../glacier-auth" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -95,7 +94,13 @@
     <MESSAGE value="修改示例代码Api写入失败错误" />
     <MESSAGE value="修正HTTP模板引用错误" />
     <MESSAGE value="修改config单例接口函数" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改config单例接口函数" />
+    <MESSAGE value="修正RESTClient" />
+    <MESSAGE value="修改模板" />
+    <MESSAGE value="修改注册换行问题" />
+    <MESSAGE value="修改引用" />
+    <MESSAGE value="修改启动模板错误" />
+    <MESSAGE value="修改缓存库New" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改缓存库New" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

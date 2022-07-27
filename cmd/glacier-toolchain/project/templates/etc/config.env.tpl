@@ -11,8 +11,10 @@ export GLACIERAUTH_CLIENT_SECRET=""
 export LOG_LEVEL="info"
 export LOG_PATH="logs"
 export LOG_TO="stdout"
+{{ if $.EnableMySQL }}
 export MYSQL_HOST="127.0.0.1"
 export MYSQL_PORT=3306
 export MYSQL_USERNAME="{{.Name}}"
 export MYSQL_PASSWORD=""
 export MYSQL_DATABASE="{{.Name}}"
+{{- end}}
